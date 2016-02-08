@@ -1,25 +1,136 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15E33e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Game Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="WBGameController" customModule="Water_Bucket_Game" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleAspectFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="water" translatesAutoresizingMaskIntoConstraints="NO" id="nsV-8b-fzh" userLabel="Background">
+                                <rect key="frame" x="20" y="28" width="560" height="400"/>
+                            </imageView>
+                            <button contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqr-af-VRx" userLabel="Bucket1" customClass="WBButton" customModule="Water_Bucket_Game" customModuleProvider="target">
+                                <rect key="frame" x="30" y="56" width="260" height="133.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <accessibility key="accessibilityConfiguration" label="Bucket1"/>
+                                <state key="normal" title="0" backgroundImage="shinyBucket">
+                                    <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="returnAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NNN-AJ-ckt"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Num Gallons" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Twg-gL-68E" userLabel="Cap1">
+                                <rect key="frame" x="30" y="197" width="260" height="20.5"/>
+                                <accessibility key="accessibilityConfiguration" label="Capacity Label 1"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="soU-1z-rjX" userLabel="Bucket2" customClass="WBButton" customModule="Water_Bucket_Game" customModuleProvider="target">
+                                <rect key="frame" x="310" y="56" width="260" height="133.5"/>
+                                <accessibility key="accessibilityConfiguration" label="Bucket2"/>
+                                <state key="normal" title="0" backgroundImage="shinyFull">
+                                    <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="returnAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cl0-Aw-h2t"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Num Gallons" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyb-kn-FSh" userLabel="Cap2">
+                                <rect key="frame" x="310" y="197" width="260" height="20.5"/>
+                                <accessibility key="accessibilityConfiguration" label="Capacity Label 2"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z7e-ts-Aev">
+                                <rect key="frame" x="20" y="436" width="560" height="30"/>
+                                <state key="normal" title="Reset"/>
+                                <connections>
+                                    <action selector="resetAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vxr-MK-2wD"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Begin" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="od1-uu-J33">
+                                <rect key="frame" x="20" y="473" width="560" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Target" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Fe-bU-iHj" userLabel="Target">
+                                <rect key="frame" x="205.5" y="171.5" width="189" height="114"/>
+                                <accessibility key="accessibilityConfiguration" label="Target Label"/>
+                                <fontDescription key="fontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="71"/>
+                                <color key="textColor" red="0.42046066055077613" green="0.80286511314098141" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="soU-1z-rjX" firstAttribute="top" secondItem="nsV-8b-fzh" secondAttribute="top" multiplier="2" id="0F6-5i-BkR"/>
+                            <constraint firstItem="uqr-af-VRx" firstAttribute="height" secondItem="soU-1z-rjX" secondAttribute="height" id="6P6-rb-0Po"/>
+                            <constraint firstItem="Twg-gL-68E" firstAttribute="top" secondItem="uqr-af-VRx" secondAttribute="bottom" constant="8" symbolic="YES" id="8oy-k0-c8X"/>
+                            <constraint firstItem="uqr-af-VRx" firstAttribute="leading" secondItem="nsV-8b-fzh" secondAttribute="leading" constant="10" id="EbR-ft-9Bk"/>
+                            <constraint firstItem="uqr-af-VRx" firstAttribute="width" secondItem="soU-1z-rjX" secondAttribute="width" id="G1w-N9-jLN"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="od1-uu-J33" secondAttribute="trailing" id="Hzg-0e-gLM"/>
+                            <constraint firstItem="0Fe-bU-iHj" firstAttribute="centerY" secondItem="nsV-8b-fzh" secondAttribute="centerY" id="IyO-6v-Pn6"/>
+                            <constraint firstItem="0Fe-bU-iHj" firstAttribute="centerX" secondItem="nsV-8b-fzh" secondAttribute="centerX" id="LvC-aI-tcD"/>
+                            <constraint firstItem="cyb-kn-FSh" firstAttribute="trailing" secondItem="soU-1z-rjX" secondAttribute="trailing" id="MtM-Zp-Atk"/>
+                            <constraint firstItem="z7e-ts-Aev" firstAttribute="top" secondItem="uqr-af-VRx" secondAttribute="bottom" constant="246.5" id="Ncy-3O-rGH"/>
+                            <constraint firstItem="nsV-8b-fzh" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="2:3" id="QZr-bi-6Ht"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="nsV-8b-fzh" secondAttribute="trailing" id="X3a-QI-S2F"/>
+                            <constraint firstItem="z7e-ts-Aev" firstAttribute="top" secondItem="nsV-8b-fzh" secondAttribute="bottom" constant="8" id="aSZ-ub-pQs"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="z7e-ts-Aev" secondAttribute="leading" id="alQ-x3-1G9"/>
+                            <constraint firstItem="od1-uu-J33" firstAttribute="top" secondItem="z7e-ts-Aev" secondAttribute="bottom" constant="8" id="csY-og-hEw"/>
+                            <constraint firstItem="soU-1z-rjX" firstAttribute="trailing" secondItem="nsV-8b-fzh" secondAttribute="trailing" constant="-10" id="dnh-8A-Zq3"/>
+                            <constraint firstItem="uqr-af-VRx" firstAttribute="top" secondItem="nsV-8b-fzh" secondAttribute="top" multiplier="2" id="g59-dc-qia"/>
+                            <constraint firstItem="soU-1z-rjX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="uqr-af-VRx" secondAttribute="trailing" constant="20" id="gcw-sS-Pdg"/>
+                            <constraint firstItem="nsV-8b-fzh" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="hwY-6n-FVM"/>
+                            <constraint firstItem="Twg-gL-68E" firstAttribute="trailing" secondItem="uqr-af-VRx" secondAttribute="trailing" id="q1u-L5-Dkg"/>
+                            <constraint firstItem="uqr-af-VRx" firstAttribute="height" secondItem="nsV-8b-fzh" secondAttribute="height" multiplier="1:3" id="qAH-oA-gRD"/>
+                            <constraint firstItem="nsV-8b-fzh" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="vRV-j3-G02"/>
+                            <constraint firstItem="cyb-kn-FSh" firstAttribute="leading" secondItem="soU-1z-rjX" secondAttribute="leading" id="wQl-UA-lgV"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="z7e-ts-Aev" secondAttribute="trailing" id="wyt-Ih-CDf"/>
+                            <constraint firstItem="Twg-gL-68E" firstAttribute="leading" secondItem="uqr-af-VRx" secondAttribute="leading" id="xKk-k7-0Mw"/>
+                            <constraint firstItem="cyb-kn-FSh" firstAttribute="top" secondItem="soU-1z-rjX" secondAttribute="bottom" constant="8" symbolic="YES" id="xci-P6-xDi"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="od1-uu-J33" secondAttribute="leading" id="yHB-N2-sCD"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Ncy-3O-rGH"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <connections>
+                        <outlet property="bucketLabel1" destination="Twg-gL-68E" id="EKq-oz-Npb"/>
+                        <outlet property="bucketLabel2" destination="cyb-kn-FSh" id="OfO-We-nWG"/>
+                        <outlet property="one" destination="uqr-af-VRx" id="E6S-mt-TEd"/>
+                        <outlet property="status" destination="od1-uu-J33" id="gIR-N9-m6p"/>
+                        <outlet property="targetLabel" destination="0Fe-bU-iHj" id="a4F-aT-4lP"/>
+                        <outlet property="two" destination="soU-1z-rjX" id="2PE-kX-tYT"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="402" y="323"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="shinyBucket" width="277" height="240"/>
+        <image name="shinyFull" width="277" height="240"/>
+        <image name="water" width="320" height="213"/>
+    </resources>
 </document>

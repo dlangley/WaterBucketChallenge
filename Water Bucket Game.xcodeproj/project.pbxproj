@@ -7,13 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		530324241C66ABC0007FCB3E /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530324231C66ABC0007FCB3E /* Game.swift */; };
 		53073AE81C65AD4A00FA003E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53073AE71C65AD4A00FA003E /* AppDelegate.swift */; };
-		53073AEA1C65AD4A00FA003E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53073AE91C65AD4A00FA003E /* ViewController.swift */; };
+		53073AEA1C65AD4A00FA003E /* WBGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53073AE91C65AD4A00FA003E /* WBGameController.swift */; };
 		53073AED1C65AD4A00FA003E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53073AEB1C65AD4A00FA003E /* Main.storyboard */; };
-		53073AEF1C65AD4A00FA003E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53073AEE1C65AD4A00FA003E /* Assets.xcassets */; };
 		53073AF21C65AD4A00FA003E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53073AF01C65AD4A00FA003E /* LaunchScreen.storyboard */; };
 		53073AFD1C65AD4A00FA003E /* Water_Bucket_GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53073AFC1C65AD4A00FA003E /* Water_Bucket_GameTests.swift */; };
 		53073B081C65AD4A00FA003E /* Water_Bucket_GameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53073B071C65AD4A00FA003E /* Water_Bucket_GameUITests.swift */; };
+		53073B161C65AFD300FA003E /* WBButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53073B151C65AFD300FA003E /* WBButton.swift */; };
+		531601251C685A4C007965C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 531601241C685A4C007965C9 /* Assets.xcassets */; };
+		531601271C688B6B007965C9 /* WBucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531601261C688B6B007965C9 /* WBucket.swift */; };
+		531601291C68C700007965C9 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 531601281C68C700007965C9 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,11 +38,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		530324231C66ABC0007FCB3E /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		53073AE41C65AD4A00FA003E /* Water Bucket Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Water Bucket Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53073AE71C65AD4A00FA003E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		53073AE91C65AD4A00FA003E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		53073AE91C65AD4A00FA003E /* WBGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WBGameController.swift; sourceTree = "<group>"; };
 		53073AEC1C65AD4A00FA003E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		53073AEE1C65AD4A00FA003E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		53073AF11C65AD4A00FA003E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		53073AF31C65AD4A00FA003E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		53073AF81C65AD4A00FA003E /* Water Bucket GameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Water Bucket GameTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,6 +51,10 @@
 		53073B031C65AD4A00FA003E /* Water Bucket GameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Water Bucket GameUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53073B071C65AD4A00FA003E /* Water_Bucket_GameUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water_Bucket_GameUITests.swift; sourceTree = "<group>"; };
 		53073B091C65AD4A00FA003E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		53073B151C65AFD300FA003E /* WBButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WBButton.swift; sourceTree = "<group>"; };
+		531601241C685A4C007965C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		531601261C688B6B007965C9 /* WBucket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WBucket.swift; sourceTree = "<group>"; };
+		531601281C68C700007965C9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +85,7 @@
 		53073ADB1C65AD4A00FA003E = {
 			isa = PBXGroup;
 			children = (
+				531601281C68C700007965C9 /* README.md */,
 				53073AE61C65AD4A00FA003E /* Water Bucket Game */,
 				53073AFB1C65AD4A00FA003E /* Water Bucket GameTests */,
 				53073B061C65AD4A00FA003E /* Water Bucket GameUITests */,
@@ -98,10 +107,13 @@
 			isa = PBXGroup;
 			children = (
 				53073AE71C65AD4A00FA003E /* AppDelegate.swift */,
-				53073AE91C65AD4A00FA003E /* ViewController.swift */,
+				530324231C66ABC0007FCB3E /* Game.swift */,
+				53073AE91C65AD4A00FA003E /* WBGameController.swift */,
+				53073B151C65AFD300FA003E /* WBButton.swift */,
+				531601261C688B6B007965C9 /* WBucket.swift */,
 				53073AEB1C65AD4A00FA003E /* Main.storyboard */,
-				53073AEE1C65AD4A00FA003E /* Assets.xcassets */,
 				53073AF01C65AD4A00FA003E /* LaunchScreen.storyboard */,
+				531601241C685A4C007965C9 /* Assets.xcassets */,
 				53073AF31C65AD4A00FA003E /* Info.plist */,
 			);
 			path = "Water Bucket Game";
@@ -230,7 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				53073AF21C65AD4A00FA003E /* LaunchScreen.storyboard in Resources */,
-				53073AEF1C65AD4A00FA003E /* Assets.xcassets in Resources */,
+				531601251C685A4C007965C9 /* Assets.xcassets in Resources */,
 				53073AED1C65AD4A00FA003E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -256,8 +268,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53073AEA1C65AD4A00FA003E /* ViewController.swift in Sources */,
+				531601291C68C700007965C9 /* README.md in Sources */,
+				53073AEA1C65AD4A00FA003E /* WBGameController.swift in Sources */,
+				531601271C688B6B007965C9 /* WBucket.swift in Sources */,
+				53073B161C65AFD300FA003E /* WBButton.swift in Sources */,
 				53073AE81C65AD4A00FA003E /* AppDelegate.swift in Sources */,
+				530324241C66ABC0007FCB3E /* Game.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -484,6 +500,7 @@
 				53073B0E1C65AD4A00FA003E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		53073B0F1C65AD4A00FA003E /* Build configuration list for PBXNativeTarget "Water Bucket GameTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +509,7 @@
 				53073B111C65AD4A00FA003E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		53073B121C65AD4A00FA003E /* Build configuration list for PBXNativeTarget "Water Bucket GameUITests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +518,7 @@
 				53073B141C65AD4A00FA003E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
