@@ -63,11 +63,9 @@ class WBGameController: UIViewController {
     
     /** Configures the WBButtons and Bucket Values according to the game settings. */
     func setBuckets() {
-        originalSpotOne = one.frame
         one.bucket = WBucket(withCapacity: game.bucket1)
         bucketLabel1.text = "\(game.bucket1) Gallons"
         
-        originalSpotTwo = two.frame
         two.bucket = WBucket(withCapacity: game.bucket2)
         bucketLabel2.text = "\(game.bucket2) Gallons"
         
@@ -77,21 +75,25 @@ class WBGameController: UIViewController {
     
     // MARK: - IBActions
     
-    // TODO: - 2nd Button return location is not consistent.
     /** Determines the correct action, executes it, and returns bucket to original position. */
     @IBAction func returnAction(sender: WBButton) {
         
+        // Perform the correct action
         if CGRectIntersectsRect(one.frame, two.frame) {
             transfer(sender)
-        } else if sender.frame.midY > originalSpotOne!.maxY {
+        } else if sender.frame.midY > sender.spot.maxY {
             fill(sender)
         } else {
             dump(sender)
         }
         
+        // Return to original position
         UIView.animateWithDuration(0.25) { () -> Void in
-            sender.frame.origin = ((sender == self.one) ? self.originalSpotOne!.origin : self.originalSpotTwo!.origin)
+            sender.frame.origin = sender.spot.origin
         }
+        
+        // Relayout to prevent view displacement after animation.
+        view.setNeedsLayout()
     }
     
     // TODO: Move Reset functions to a menu.

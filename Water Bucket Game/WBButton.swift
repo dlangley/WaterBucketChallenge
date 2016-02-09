@@ -24,6 +24,9 @@ class WBButton: UIButton, WBucketDelegate {
         }
     }
     
+    /** Represents the original location for the bucket to return to after movement. */
+    var spot : CGRect!
+    
     
     // MARK: - UIButton LifeCycle Methods
     
@@ -37,6 +40,7 @@ class WBButton: UIButton, WBucketDelegate {
         
         setBackgroundImage(UIImage(named: "shinyBucket"), forState: UIControlState.Normal)
         setBackgroundImage(UIImage(named: "shinyFull"), forState: UIControlState.Selected)
+        spot = frame
     }
     
     /** Override to allow for dragging the button. */
