@@ -205,6 +205,7 @@
 				TargetAttributes = {
 					53073AE31C65AD4A00FA003E = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 2YB784UBQA;
 					};
 					53073AF71C65AD4A00FA003E = {
 						CreatedOnToolsVersion = 7.2;
@@ -415,6 +416,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Water Bucket Game/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "self.dlangley.Water-Bucket-Game";
@@ -426,6 +428,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Water Bucket Game/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "self.dlangley.Water-Bucket-Game";
