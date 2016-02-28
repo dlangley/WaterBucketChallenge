@@ -33,6 +33,7 @@ class WBGameController: UIViewController, GameDelegate {
     /** Updates the user on the amount of moves. */
     @IBOutlet var status: UILabel!
     
+    @IBOutlet var gameSpace: UIView!
     
     //MARK: - Properties
     
@@ -71,19 +72,22 @@ class WBGameController: UIViewController, GameDelegate {
     
     /** Provides Feedback - Game is Ready */
     func puzzleReady() {
-        self.view.backgroundColor = UIColor.whiteColor()
+        gameSpace.userInteractionEnabled = true
+        view.backgroundColor = UIColor.whiteColor()
     }
     
     /** Provides Feedback - Success */
     func puzzleSolved() {
-        UIView.animateWithDuration(0.25) { () -> Void in
+        gameSpace.userInteractionEnabled = false
+        UIView.animateWithDuration(0.4) { () -> Void in
             self.view.backgroundColor = UIColor.greenColor()
         }
     }
     
     /** Provides Feedback - Success */
     func puzzleFailed() {
-        UIView.animateWithDuration(0.25) { () -> Void in
+        gameSpace.userInteractionEnabled = false
+        UIView.animateWithDuration(0.4) { () -> Void in
             self.view.backgroundColor = UIColor.redColor()
         }
     }
@@ -97,13 +101,11 @@ class WBGameController: UIViewController, GameDelegate {
         // Perform the correct action
         if CGRectIntersectsRect(one.frame, two.frame) {
             transfer(sender)
-        } else if sender.frame.midY > sender.spot.maxY {
+        } else if sender.frame.midY >= gameSpace.frame.midY {
             fill(sender)
-        } else {
+        } else if sender.frame.midY >= sender.spot.origin.y {
             dump(sender)
         }
-        
-        view.setNeedsLayout()
     }
     
     // TODO: Move Reset functions to a menu.

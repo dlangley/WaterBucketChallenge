@@ -59,6 +59,8 @@ class WBButton: UIButton, WBucketDelegate {
         UIView.animateWithDuration(0.25) { () -> Void in
             self.frame.origin = self.spot.origin
         }
+        
+        superview!.setNeedsLayout()
     }
     
     // MARK: - Other Animations
