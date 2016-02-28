@@ -40,6 +40,9 @@ class WBucket: NSObject {
             isEmpty = newValue == 0
             isFull = newValue == capacity
             delegate?.contentUpdate!(newValue)
+            if newValue == game.target {
+                game.status = .solved
+            }
         }
     }
     
