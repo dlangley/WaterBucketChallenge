@@ -37,7 +37,7 @@ class WBButton: UIButton, WBucketDelegate {
         if bucket == nil {
             bucket = WBucket()
         }
-        
+        titleLabel?.backgroundColor = UIColor.clearColor()
         setBackgroundImage(UIImage(named: "shinyBucket"), forState: UIControlState.Normal)
         setBackgroundImage(UIImage(named: "shinyFull"), forState: UIControlState.Selected)
         spot = frame
@@ -52,6 +52,28 @@ class WBButton: UIButton, WBucketDelegate {
         }
     }
     
+    /** Override to automate the bounce back. */
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesEnded(touches, withEvent: event)
+        
+        UIView.animateWithDuration(0.25) { () -> Void in
+            self.frame.origin = self.spot.origin
+        }
+    }
+    
+    // MARK: - Other Animations
+    func highlightContent() {
+        UIView.animateWithDuration(0.25, delay: 0, options: [UIViewAnimationOptions.Autoreverse, UIViewAnimationOptions.CurveEaseInOut] , animations: { () -> Void in
+            
+            let transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+            self.titleLabel?.transform = transform
+            
+            }) { (finished : Bool) -> Void in
+                
+                let trans = CGAffineTransformMakeRotation(0)
+                self.titleLabel?.transform = trans
+        }
+    }
     
     // MARK: - WBucketDelegate Methods
     
@@ -60,7 +82,7 @@ class WBButton: UIButton, WBucketDelegate {
         setTitle( "\(amount)", forState: UIControlState.Normal)
         setTitle( "\(amount)", forState: UIControlState.Selected)
         setTitle( "\(amount)", forState: UIControlState.Highlighted)
-        setNeedsDisplay()
+        highlightContent()
     }
     
     /** Updates the button image with the presesnce/absence of water. */

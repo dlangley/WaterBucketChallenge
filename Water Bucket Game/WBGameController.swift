@@ -11,7 +11,7 @@ import UIKit
 // MARK: - WBGameController
 
 /** Custom View controller to interface with the user during the game. */
-class WBGameController: UIViewController {
+class WBGameController: UIViewController, GameDelegate {
 
     // MARK: - IBOutlets
     
@@ -36,9 +36,6 @@ class WBGameController: UIViewController {
     
     //MARK: - Properties
     
-    /** Storing the original posotions of the Buckets for return animation. */
-    var originalSpotOne, originalSpotTwo : CGRect?
-    
     /** Represents the amounct of moves made so far.
     * Functional - Updates status label. 
     */
@@ -54,12 +51,12 @@ class WBGameController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+        game.delegate = self
         setBuckets()
     }
 
     
-    // MARK: - Setup Method
+    // MARK: - Setup Methods
     
     /** Configures the WBButtons and Bucket Values according to the game settings. */
     func setBuckets() {
@@ -72,10 +69,29 @@ class WBGameController: UIViewController {
         targetLabel.text = "\(game.target)"
     }
     
+    /** Provides Feedback - Game is Ready */
+    func puzzleReady() {
+        self.view.backgroundColor = UIColor.whiteColor()
+    }
+    
+    /** Provides Feedback - Success */
+    func puzzleSolved() {
+        UIView.animateWithDuration(0.25) { () -> Void in
+            self.view.backgroundColor = UIColor.greenColor()
+        }
+    }
+    
+    /** Provides Feedback - Success */
+    func puzzleFailed() {
+        UIView.animateWithDuration(0.25) { () -> Void in
+            self.view.backgroundColor = UIColor.redColor()
+        }
+    }
+    
     
     // MARK: - IBActions
     
-    /** Determines the correct action, executes it, and returns bucket to original position. */
+    /** Determines the correct action, and executes it. */
     @IBAction func returnAction(sender: WBButton) {
         
         // Perform the correct action
@@ -87,12 +103,6 @@ class WBGameController: UIViewController {
             dump(sender)
         }
         
-        // Return to original position
-        UIView.animateWithDuration(0.25) { () -> Void in
-            sender.frame.origin = sender.spot.origin
-        }
-        
-        // Relayout to prevent view displacement after animation.
         view.setNeedsLayout()
     }
     
@@ -127,6 +137,8 @@ class WBGameController: UIViewController {
         alert.addAction(no)
         alert.addAction(yes)
         presentViewController(alert, animated: false, completion: nil)
+        
+        game.status = .ready
     }
     
     
@@ -159,6 +171,21 @@ class WBGameController: UIViewController {
         let xferAmount = sender.bucket.content <= xferSpace ? sender.bucket.content : xferSpace
         if recipient.bucket.take(xferAmount) && sender.bucket.take(-xferAmount) {
             count += 1
+        }
+    }
+    
+    // MARK: - GameDelegate Implementation
+    
+    /** Performs the proper action based on the game state */
+    func gameStatusChanged(iValue: Int) {
+        
+        if let check = Game.state(rawValue: iValue) {
+            switch check {
+            case .ready: puzzleReady()
+            case .solved: puzzleSolved()
+            case .failed: puzzleFailed()
+            default: break
+            }
         }
     }
 }
