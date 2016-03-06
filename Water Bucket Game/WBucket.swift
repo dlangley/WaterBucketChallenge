@@ -8,6 +8,15 @@
 
 import Foundation
 
+// MARK: - WBucketDelegate
+
+/** Protocol used to update the WBButton */
+@objc protocol WBucketDelegate {
+    optional func emptyUpdate(status: Bool)
+    optional func contentUpdate(amount: Int)
+}
+
+
 // MARK: - WBucket
 
 /** Model Object for the Water Bucket. */
@@ -112,13 +121,4 @@ class WBucket: NSObject {
         
         return true
     }
-}
-
-
-// MARK: - WBucketDelegate
-
-/** Protocol used to update the WBButton */
-@objc protocol WBucketDelegate {
-    optional func emptyUpdate(status: Bool)
-    optional func contentUpdate(amount: Int)
 }

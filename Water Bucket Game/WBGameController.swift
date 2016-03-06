@@ -11,7 +11,7 @@ import UIKit
 // MARK: - WBGameController
 
 /** Custom View controller to interface with the user during the game. */
-class WBGameController: UIViewController, GameDelegate {
+class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
 
     // MARK: - IBOutlets
     
@@ -33,9 +33,19 @@ class WBGameController: UIViewController, GameDelegate {
     /** Updates the user on the amount of moves. */
     @IBOutlet var status: UILabel!
     
+    /** Represents the part of the screen that user interacts with to solve the puzzle. */
     @IBOutlet var gameSpace: UIView!
     
-    //MARK: - Properties
+    /** Represents the pending doom if user does not solve the puzzle in time. */
+    @IBOutlet var bombImage: UIImageView!
+    
+    /** Displays the remaining time. 
+    * Functional - Updats game state to failure when time runs out.
+    */
+    @IBOutlet var timeLabel: UILabel!
+    
+    
+    // MARK: - Properties
     
     /** Represents the amounct of moves made so far.
     * Functional - Updates status label. 
@@ -53,6 +63,8 @@ class WBGameController: UIViewController, GameDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         game.delegate = self
+        one.delegate = self
+        two.delegate = self
         setBuckets()
     }
 
@@ -72,6 +84,7 @@ class WBGameController: UIViewController, GameDelegate {
     
     /** Provides Feedback - Game is Ready */
     func puzzleReady() {
+        self.setBuckets()
         gameSpace.userInteractionEnabled = true
         view.backgroundColor = UIColor.whiteColor()
     }
@@ -94,35 +107,25 @@ class WBGameController: UIViewController, GameDelegate {
     
     
     // MARK: - IBActions
-    
-    /** Determines the correct action, and executes it. */
-    @IBAction func returnAction(sender: WBButton) {
-        
-        // Perform the correct action
-        if CGRectIntersectsRect(one.frame, two.frame) {
-            transfer(sender)
-        } else if sender.frame.midY >= gameSpace.frame.midY {
-            fill(sender)
-        } else if sender.frame.midY >= sender.spot.origin.y {
-            dump(sender)
-        }
-    }
-    
     // TODO: Move Reset functions to a menu.
+    
     /** Empties the buckets, resets the count, and allows for changing the buckets.  Quick and sloppy version. */
     @IBAction func resetAction(sender: UIButton) {
-        dump(one)
-        dump(two)
+        one.dump()
+        two.dump()
         count = 0
         
         let alert = UIAlertController(title: "Reset", message: "Change Buckets?", preferredStyle: UIAlertControllerStyle.Alert)
         let yes = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (action: UIAlertAction) -> Void in
-            game.bucket1 = Int((alert.textFields?.first?.text)!)
-            game.bucket2 =  Int((alert.textFields?[1].text)!)
-            game.target = Int((alert.textFields?.last?.text)!)
-            self.setBuckets()
+            
+            let b1 = Int((alert.textFields?.first?.text)!)
+            let b2 =  Int((alert.textFields?[1].text)!)
+            let t = Int((alert.textFields?.last?.text)!)
+            game.config(b1, buc2: b2, targ: t)
         }
-        let no = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel, handler: nil)
+        let no = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { ( action: UIAlertAction) -> Void in
+            game.config()
+        }
         alert.addTextFieldWithConfigurationHandler { (field: UITextField) -> Void in
             field.keyboardType = UIKeyboardType.DecimalPad
             field.placeholder = "1st Bucket"
@@ -140,41 +143,30 @@ class WBGameController: UIViewController, GameDelegate {
         alert.addAction(yes)
         presentViewController(alert, animated: false, completion: nil)
         
-        game.status = .ready
     }
     
     
-    // MARK: - Bucket Game Actions
+    // MARK: - WBButtonDelegate Implementation
     
-    /** Attempts to fill a bucket to capacity.
-    * Updates the count if successful.
-    */
-    func fill(sender: WBButton!) {
-        if sender.bucket.fill() {
-            count += 1
-        }
+    /** Called in response to a successful bucket move. */
+    func moveMade() {
+        count += 1
     }
     
-    /** Attempts to empty a bucket.
-    * Updates the count if successful.
-    */
-    func dump(sender: WBButton!) {
-        if sender.bucket.empty() {
-            count += 1
-        }
+    /** Called to update the recipient bucket in a transfer action. */
+    func completeXfer(sender: WBButton, amount: Int) -> Bool {
+        let recipient = sender == two ? one : two
+        return recipient.bucket.take(amount)
     }
     
-    /** Attempts to transfer from one bucket to another.
-    * Updates the count if successful.
-    */
-    func transfer(sender: WBButton!) {
+    /** Called to evaluate the intent and amount of a transfer action. */
+    func crossBuckets(sender: WBButton) -> (Bool, Int) {
         let recipient = sender == two ? one : two
         let xferSpace = abs(recipient.bucket.capacity - recipient.bucket.content)
         let xferAmount = sender.bucket.content <= xferSpace ? sender.bucket.content : xferSpace
-        if recipient.bucket.take(xferAmount) && sender.bucket.take(-xferAmount) {
-            count += 1
-        }
+        return (CGRectIntersectsRect(one.frame, two.frame), xferAmount)
     }
+
     
     // MARK: - GameDelegate Implementation
     
@@ -188,6 +180,16 @@ class WBGameController: UIViewController, GameDelegate {
             case .failed: puzzleFailed()
             default: break
             }
+        }
+    }
+    
+    /** Implements the countdown.
+    * Functional - Triggers failure event when time runs out.
+    */
+    func timeChanged(remainingTime: Int) {
+        timeLabel.text = "\(remainingTime)"
+        if remainingTime == 0 {
+            game.status = .failed
         }
     }
 }
