@@ -2,10 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "shinyFull.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "shinyFull@2x.png",
       "scale" : "2x"
     },
     {

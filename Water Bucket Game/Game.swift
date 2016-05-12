@@ -19,7 +19,6 @@ let game = Game.sharedGame
 /** Protocol used to update WBGameController. */
 @objc protocol GameDelegate {
     func gameStatusChanged(iValue : Int)
-    func timeChanged(remainingTime : Int)
 }
 
 
@@ -32,7 +31,7 @@ class Game : NSObject {
     required override init() {
         super.init()
         
-        config()
+        configure {}
     }
     
     /** Singleton instance of the Game class.*/
@@ -43,34 +42,15 @@ class Game : NSObject {
     
     /** Values for setting the Bucket Capacities, Target Amount, and Game time.*/
     var bucket1, bucket2, target, time : Int!
-    
-    /** Remaining time in the game. 
-    * Functional - Updates the game controller with the remaining time.
-    */
-    private var remaining : Int! {
-        willSet {
-            delegate?.timeChanged(newValue)
-        }
-    }
-    
-    /** Timer for game functions. */
-    var timer : NSTimer!
+
     
     // TODO: - AI to measure efficiency of the player's solution.
     
-    /** Game states to let the app know when you've solved the puzzle. 
-    * Functional - Initiates corresponding actions.
-    */
+    /** Game states to let the app know when you've solved the puzzle.
+     * Functional - Initiates corresponding actions.
+     */
     var status : state = .ready {
         willSet {
-            switch newValue {
-            case .solved: fallthrough
-            case .failed:
-                timer.invalidate()
-            case .ready:
-                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("countDown"), userInfo: nil, repeats: true)
-            default: break
-            }
             delegate?.gameStatusChanged(newValue.rawValue)
         }
     }
@@ -80,21 +60,29 @@ class Game : NSObject {
         case ready = 0, finished, solved, failed
     }
     
-    /** Decrements the remaining time. */
-    func countDown() {
-        remaining = remaining - 1
-    }
-    
-    /** Sets the game environment. 
-    * Uses default values for optional parameters.
-    */
-    func config(buc1: Int? = 3, buc2: Int? = 5, targ: Int? = 4, t: Int? = 30) {
-        bucket1 = buc1 ?? bucket1
-        bucket2 = buc2 ?? bucket2
-        target = targ ?? target
-        time = t ?? time
-        remaining = time
+    /** Sets the game environment.
+     * Uses default values for optional parameters.
+     * Provides a completion block
+     */
+    func configure(buc1: Int? = 3, buc2: Int? = 5, targ: Int? = 4, t: Int? = 30, completion:(() -> Void)) {
+        
+        if isSolvable(buc1, cap2: buc2, targ: targ) {
+            bucket1 = buc1 ?? bucket1
+            bucket2 = buc2 ?? bucket2
+            target = targ ?? target
+            time = t ?? time
+        }
         
         status = .ready
+    }
+    
+    /** Evaluates true if the combination of buckets and targets are solvable.*/
+    func isSolvable(cap1 : Int?, cap2 : Int?, targ: Int?) -> Bool {
+        if let c1 = cap1, c2 = cap2, t = targ {
+            let evenBucketsOddTargets = c1 % 2 == 0 && c2 % 2 == 0 && t % 2 != 0
+            let sameBuckets = c1 == c2 && c1 != t
+            return !evenBucketsOddTargets && !sameBuckets
+        }
+        return false
     }
 }
