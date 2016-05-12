@@ -49,6 +49,7 @@ class WBButton: UIButton, WBucketDelegate {
         if bucket == nil {
             bucket = WBucket()
         }
+        
         titleLabel?.backgroundColor = UIColor.clearColor()
         setBackgroundImage(UIImage(named: "shinyBucket"), forState: UIControlState.Normal)
         setBackgroundImage(UIImage(named: "shinyFull"), forState: UIControlState.Selected)

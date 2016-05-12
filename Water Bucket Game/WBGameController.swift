@@ -47,10 +47,26 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
     
     // MARK: - Properties
     
-    /** Represents the amounct of moves made so far.
+    /** Timer to drive the countdown for the Bucket Puzzle. */
+    private var timer : NSTimer!
+    
+    /** Remaining time in the game.
+     * Functional - Updates the timeLabel.
+     * Functional - Triggers failure event when time runs out.
+     */
+    private var remainingTime : Int! {
+        willSet {
+            if newValue == 0 {
+                game.status = .failed
+            }
+            self.timeLabel.text = "\(newValue)"
+        }
+    }
+    
+    /** Represents the amount of moves made so far.
     * Functional - Updates status label. 
     */
-    var count = 0 {
+    private var count = 0 {
         willSet {
             status.text = "\(newValue) Moves"
         }
@@ -66,10 +82,16 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
         one.delegate = self
         two.delegate = self
         setBuckets()
+        
     }
 
     
-    // MARK: - Setup Methods
+    // MARK: - Methods
+    
+    /** Implements the countdown. */
+    func countDown() {
+        remainingTime = remainingTime - 1
+    }
     
     /** Configures the WBButtons and Bucket Values according to the game settings. */
     func setBuckets() {
@@ -80,6 +102,9 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
         bucketLabel2.text = "\(game.bucket2) Gallons"
         
         targetLabel.text = "\(game.target)"
+        remainingTime = game.time
+        
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(WBGameController.countDown), userInfo: nil, repeats: true)
     }
     
     /** Provides Feedback - Game is Ready */
@@ -89,19 +114,12 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
         view.backgroundColor = UIColor.whiteColor()
     }
     
-    /** Provides Feedback - Success */
-    func puzzleSolved() {
+    /** Provides Feedback for Success or Failure */
+    func puzzleEnded(solved: Bool) {
+        timer.invalidate()
         gameSpace.userInteractionEnabled = false
         UIView.animateWithDuration(0.4) { () -> Void in
-            self.view.backgroundColor = UIColor.greenColor()
-        }
-    }
-    
-    /** Provides Feedback - Success */
-    func puzzleFailed() {
-        gameSpace.userInteractionEnabled = false
-        UIView.animateWithDuration(0.4) { () -> Void in
-            self.view.backgroundColor = UIColor.redColor()
+            self.view.backgroundColor = solved ? UIColor.greenColor() : UIColor.redColor()
         }
     }
     
@@ -121,10 +139,15 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
             let b1 = Int((alert.textFields?.first?.text)!)
             let b2 =  Int((alert.textFields?[1].text)!)
             let t = Int((alert.textFields?.last?.text)!)
-            game.config(b1, buc2: b2, targ: t)
+            
+            game.configure(b1, buc2: b2, targ: t, completion: {
+                    self.setBuckets()
+            })
         }
         let no = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { ( action: UIAlertAction) -> Void in
-            game.config()
+            game.configure(completion: {
+                self.setBuckets()
+            })
         }
         alert.addTextFieldWithConfigurationHandler { (field: UITextField) -> Void in
             field.keyboardType = UIKeyboardType.DecimalPad
@@ -142,7 +165,6 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
         alert.addAction(no)
         alert.addAction(yes)
         presentViewController(alert, animated: false, completion: nil)
-        
     }
     
     
@@ -176,20 +198,10 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
         if let check = Game.state(rawValue: iValue) {
             switch check {
             case .ready: puzzleReady()
-            case .solved: puzzleSolved()
-            case .failed: puzzleFailed()
-            default: break
+            case .solved: fallthrough //puzzleSolved()
+            case .failed: fallthrough //puzzleFailed()
+            default: puzzleEnded(check == .solved)
             }
-        }
-    }
-    
-    /** Implements the countdown.
-    * Functional - Triggers failure event when time runs out.
-    */
-    func timeChanged(remainingTime: Int) {
-        timeLabel.text = "\(remainingTime)"
-        if remainingTime == 0 {
-            game.status = .failed
         }
     }
 }
