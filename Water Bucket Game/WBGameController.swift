@@ -132,6 +132,9 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
         one.dump()
         two.dump()
         count = 0
+        if timer.valid {
+            timer.invalidate()
+        }
         
         let alert = UIAlertController(title: "Reset", message: "Change Buckets?", preferredStyle: UIAlertControllerStyle.Alert)
         let yes = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (action: UIAlertAction) -> Void in
@@ -173,6 +176,11 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
     /** Called in response to a successful bucket move. */
     func moveMade() {
         count += 1
+        
+        // Ends the game if the goal is reached.
+        if (one.bucket.content == game.target && two.bucket.isEmpty) || (two.bucket.content == game.target && one.bucket.isEmpty) {
+            game.status = .solved
+        }
     }
     
     /** Called to update the recipient bucket in a transfer action. */
