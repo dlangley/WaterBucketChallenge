@@ -1,3 +1,4 @@
+
 //
 //  WBButton.swift
 //  Water Bucket Game
@@ -13,7 +14,7 @@ import UIKit
 /** Protocol used to update WBGameController. */
 protocol WBButtonDelegate : class {
     func crossBuckets(sender: WBButton) -> (Bool, Int)
-    func completeXfer(sender: WBButton, amount: Int) -> Bool
+    func completeXfer(sender: WBButton, amount: Int, completion: ((successful2: Bool)-> Void))
     func moveMade()
 }
 
@@ -37,6 +38,10 @@ class WBButton: UIButton, WBucketDelegate {
     /** Represents the original location for the bucket to return to after movement. */
     var spot : CGRect!
     
+    /** Prevents updating move made twice for 1 xfer. */
+    private var crossVerified = false
+    
+    /** Anonymous reference to fire delegate methods. */
     weak var delegate : WBButtonDelegate?
     
     
@@ -59,6 +64,10 @@ class WBButton: UIButton, WBucketDelegate {
     /** Override to allow for dragging the button. */
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesMoved(touches, withEvent: event)
+        
+        if crossVerified {
+            crossVerified = false
+        }
         
         for touch in touches {
             // Reposition the Button to wherever the finger moves.
@@ -87,19 +96,35 @@ class WBButton: UIButton, WBucketDelegate {
         }
     }
     
-    /** Override to animate the bounce back and perform bucket actions. */
+    /** Override to animate the bounce back and perform the proper bucket action. */
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesEnded(touches, withEvent: event)
         
-        // Perform the proper bucket action.
-        if let shouldXfer = delegate?.crossBuckets(self) {
+        // Actions for when the bucket has water in it
+        if bucket.content > 0 {
+            
+            // Constant to reference overlapping bucket info.
+            let shouldXfer = delegate!.crossBuckets(self)
+            
+            // Transfer condition
             if shouldXfer.0 {
-                xfer(shouldXfer.1)
-            } else if frame.midY >= superview?.bounds.midY {
-                fill()
-            } else if frame.minY <= 0 {
+                pour(-shouldXfer.1, completion: { (successful) in
+                    if successful {
+                        self.delegate?.completeXfer(self, amount: shouldXfer.1, completion: { (successful2) in
+                            if successful2 {
+                                if !self.crossVerified {
+                                    self.crossVerified = true
+                                    self.delegate?.moveMade()
+                                }
+                            }
+                        })
+                    }
+                })
+            } else if frame.minY <= 0 { // Dump condition
                 dump()
             }
+        } else if bucket.content < bucket.capacity && frame.midY >= superview?.bounds.midY {
+            fill()
         }
         
         // Return button the original position.
@@ -144,24 +169,26 @@ class WBButton: UIButton, WBucketDelegate {
     
     /** Empties the bucket. */
     func dump() {
-        if bucket.empty() {
-            delegate?.moveMade()
+        bucket.dump { (successful) in
+            if successful {
+                self.delegate?.moveMade()
+            }
         }
     }
     
     /** Fills the bucket. */
     func fill() {
-        if bucket.fill() {
-            delegate?.moveMade()
+        bucket.fill { (successful) in
+            if successful {
+                self.delegate?.moveMade()
+            }
         }
     }
     
-    /** Transfers water from this bucket to the next. */
-    func xfer(amount: Int) {
-        if bucket.take(-amount) {
-            if let _ = delegate?.completeXfer(self, amount: amount) {
-                delegate?.moveMade()
-            }
+    /** Adds a specified amount of gallons to the bucket. */
+    func pour(amount: Int, completion: ((successful: Bool)-> Void)) {
+        bucket.take(amount) { (successful) in
+            return completion(successful: successful)
         }
     }
     

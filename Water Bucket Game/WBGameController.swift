@@ -64,11 +64,16 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
     }
     
     /** Represents the amount of moves made so far.
-    * Functional - Updates status label. 
+    * Functional - Updates status label and puzzle solved condition.
     */
     private var count = 0 {
         willSet {
             status.text = "\(newValue) Moves"
+            
+            // Ends the game if the goal is reached.
+            if (one.bucket.content == game.target && two.bucket.isEmpty) || (two.bucket.content == game.target && one.bucket.isEmpty) {
+                game.status = .solved
+            }
         }
     }
     
@@ -86,7 +91,7 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
     }
 
     
-    // MARK: - Methods
+    // MARK: - Instance Methods
     
     /** Implements the countdown. */
     func countDown() {
@@ -176,17 +181,15 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
     /** Called in response to a successful bucket move. */
     func moveMade() {
         count += 1
-        
-        // Ends the game if the goal is reached.
-        if (one.bucket.content == game.target && two.bucket.isEmpty) || (two.bucket.content == game.target && one.bucket.isEmpty) {
-            game.status = .solved
-        }
     }
     
     /** Called to update the recipient bucket in a transfer action. */
-    func completeXfer(sender: WBButton, amount: Int) -> Bool {
+    func completeXfer(sender: WBButton, amount: Int, completion: ((successful2: Bool) -> Void)) {
         let recipient = sender == two ? one : two
-        return recipient.bucket.take(amount)
+        recipient.pour(amount) { (successful) in
+            return completion(successful2: successful)
+        }
+        return completion(successful2: true)
     }
     
     /** Called to evaluate the intent and amount of a transfer action. */

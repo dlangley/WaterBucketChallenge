@@ -79,43 +79,35 @@ class WBucket: NSObject {
     1. Fill bucket if it is not already full.
     2. Return TRUE if action is successful.
     */
-    func fill() -> Bool {
-        
-        if isFull {
-            return false
+    func fill(completion: ((successful: Bool)-> Void)) {
+        if !isFull {
+            content = capacity
+            return completion(successful: true)
         }
-        
-        content = capacity
-        
-        return true
+        return completion(successful: false)
     }
     
     /** Dual Purposed:
     1. Empty bucket if it is not already empty.
     2. Return TRUE if action is successful.
     */
-    func empty() -> Bool {
-        
-        if isEmpty {
-            return false
+    func dump(completion: ((successful: Bool)-> Void)) {
+        if !isEmpty {
+            content = 0
+            return completion(successful: true)
         }
-        
-        content = 0
-        
-        return true
+        return completion(successful: false)
     }
     
     /** Dual Purposed:
     1. Add/Subtract a specified amount of gallons if that amount will not take the bucket beyond capacity or below 0.
     2. Return TRUE if action is successful.
     */
-    func take(amount: Int) -> Bool {
-        if content + amount < 0 || content + amount > capacity || amount == 0 {
-            return false
+    func take(amount: Int, completion: ((successful: Bool)-> Void)) {
+        if 0...capacity ~= content + amount {
+            content += amount
+            return completion(successful: true)
         }
-        
-        content += amount
-        
-        return true
+        return completion(successful: false)
     }
 }
