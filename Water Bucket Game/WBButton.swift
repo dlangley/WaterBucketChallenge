@@ -9,7 +9,7 @@
 
 import UIKit
 
-// MARK: - WBButtonDelegate
+// MARK: Protocol for WBButtoDelegate
 
 /** Protocol used to update WBGameController. */
 protocol WBButtonDelegate : class {
@@ -19,13 +19,11 @@ protocol WBButtonDelegate : class {
 }
 
 
-// MARK: - WBButton
+// MARK: WBButton
 
 /** Custom UIButton used as the Controller and the View for a single Water Bucket. */
-class WBButton: UIButton, WBucketDelegate {
+class WBButton: UIButton {
 
-    // MARK: - Properties
-    
     /** Model Object for this button. 
     * Functional - Delegate is set upon setting.
     */
@@ -43,10 +41,12 @@ class WBButton: UIButton, WBucketDelegate {
     
     /** Anonymous reference to fire delegate methods. */
     weak var delegate : WBButtonDelegate?
+}
+
     
+// MARK: UIButton LifeCycle Overrides
     
-    // MARK: - UIButton LifeCycle Methods
-    
+extension WBButton {
     /** Config the buttons to represent the Water Bucket. */
     override func willMoveToSuperview(newSuperview: UIView?) {
         super.willMoveToSuperview(newSuperview)
@@ -128,17 +128,23 @@ class WBButton: UIButton, WBucketDelegate {
         }
         
         // Return button the original position.
-        UIView.animateWithDuration(0.25) { () -> Void in
-            self.frame.origin = self.spot.origin
-            self.transform = CGAffineTransformMakeRotation(0)
-        }
+        snapToOrigin()
         
         // Update the layout of the view.
         superview!.setNeedsLayout()
     }
+}
+
+
+// MARK: Non-Touch Animations
     
-    
-    // MARK: - Other Animations
+extension WBButton {
+    func snapToOrigin() {
+        UIView.animateWithDuration(0.25) { () -> Void in
+        self.frame.origin = self.spot.origin
+        self.transform = CGAffineTransformMakeRotation(0)
+        }
+    }
     
     /** Spins the title label to alert the player of new values. */
     func highlightContent() {
@@ -163,10 +169,12 @@ class WBButton: UIButton, WBucketDelegate {
         transform = CGAffineTransformMakeRotation(CGFloat(fromLeft ? -rAmount : rAmount))
         setNeedsLayout()
     }
-    
-    
-    // MARK: - Bucket Actions
-    
+}
+
+
+// MARK: Bucket Actions
+
+extension WBButton {
     /** Empties the bucket. */
     func dump() {
         bucket.dump { (successful) in
@@ -191,9 +199,12 @@ class WBButton: UIButton, WBucketDelegate {
             return completion(successful: successful)
         }
     }
-    
-    // MARK: - WBucketDelegate Methods
-    
+}
+
+
+// MARK: WBucketDelegate Methods
+
+extension WBButton: WBucketDelegate {
     /** Updates the button title with the current amount. */
     func contentUpdate(amount: Int) {
         setTitle( "\(amount)", forState: UIControlState.Normal)

@@ -100,11 +100,11 @@ class WBucket: NSObject {
     }
     
     /** Dual Purposed:
-    1. Add/Subtract a specified amount of gallons if that amount will not take the bucket beyond capacity or below 0.
+    1. Add/Subtract a specified non-zero amount of gallons if that amount will not take the bucket beyond capacity or below 0.
     2. Return TRUE if action is successful.
     */
     func take(amount: Int, completion: ((successful: Bool)-> Void)) {
-        if 0...capacity ~= content + amount {
+        if amount != 0 && 0...capacity ~= content + amount {
             content += amount
             return completion(successful: true)
         }

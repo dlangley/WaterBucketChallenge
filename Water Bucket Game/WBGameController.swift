@@ -11,7 +11,7 @@ import UIKit
 // MARK: - WBGameController
 
 /** Custom View controller to interface with the user during the game. */
-class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
+class WBGameController: UIViewController {
 
     // MARK: - IBOutlets
     
@@ -78,7 +78,7 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
     }
     
     
-    // MARK: - UIViewController LifeCycle Methods
+    // MARK: UIViewController LifeCycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,7 +91,7 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
     }
 
     
-    // MARK: - Instance Methods
+    // MARK: Instance Methods
     
     /** Implements the countdown. */
     func countDown() {
@@ -129,7 +129,7 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
     }
     
     
-    // MARK: - IBActions
+    // MARK: IBActions
     // TODO: Move Reset functions to a menu.
     
     /** Empties the buckets, resets the count, and allows for changing the buckets.  Quick and sloppy version. */
@@ -174,9 +174,12 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
         alert.addAction(yes)
         presentViewController(alert, animated: false, completion: nil)
     }
+}
+
     
+// MARK: WBButtonDelegate Implementation
     
-    // MARK: - WBButtonDelegate Implementation
+extension WBGameController: WBButtonDelegate {
     
     /** Called in response to a successful bucket move. */
     func moveMade() {
@@ -199,9 +202,12 @@ class WBGameController: UIViewController, GameDelegate, WBButtonDelegate {
         let xferAmount = sender.bucket.content <= xferSpace ? sender.bucket.content : xferSpace
         return (CGRectIntersectsRect(one.frame, two.frame), xferAmount)
     }
+}
 
     
-    // MARK: - GameDelegate Implementation
+// MARK: GameDelegate Implementation
+    
+extension WBGameController: GameDelegate {
     
     /** Performs the proper action based on the game state */
     func gameStatusChanged(iValue: Int) {
