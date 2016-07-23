@@ -48,7 +48,7 @@ class WBGameController: UIViewController {
     // MARK: - Properties
     
     /** Timer to drive the countdown for the Bucket Puzzle. */
-    private var timer : NSTimer!
+    private var timer : Timer!
     
     /** Remaining time in the game.
      * Functional - Updates the timeLabel.
@@ -59,7 +59,7 @@ class WBGameController: UIViewController {
             if newValue == 0 {
                 game.status = .failed
             }
-            self.timeLabel.text = "\(newValue)"
+            self.timeLabel.text = "\(newValue!)"
         }
     }
     
@@ -101,30 +101,30 @@ class WBGameController: UIViewController {
     /** Configures the WBButtons and Bucket Values according to the game settings. */
     func setBuckets() {
         one.bucket = WBucket(withCapacity: game.bucket1)
-        bucketLabel1.text = "\(game.bucket1) Gallons"
+        bucketLabel1.text = "\(game.bucket1!) Gallons"
         
         two.bucket = WBucket(withCapacity: game.bucket2)
-        bucketLabel2.text = "\(game.bucket2) Gallons"
+        bucketLabel2.text = "\(game.bucket2!) Gallons"
         
-        targetLabel.text = "\(game.target)"
+        targetLabel.text = "\(game.target!)"
         remainingTime = game.time
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(WBGameController.countDown), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(WBGameController.countDown), userInfo: nil, repeats: true)
     }
     
     /** Provides Feedback - Game is Ready */
     func puzzleReady() {
         self.setBuckets()
-        gameSpace.userInteractionEnabled = true
-        view.backgroundColor = UIColor.whiteColor()
+        gameSpace.isUserInteractionEnabled = true
+        view.backgroundColor = UIColor.white()
     }
     
     /** Provides Feedback for Success or Failure */
-    func puzzleEnded(solved: Bool) {
+    func puzzleEnded(_ solved: Bool) {
         timer.invalidate()
-        gameSpace.userInteractionEnabled = false
-        UIView.animateWithDuration(0.4) { () -> Void in
-            self.view.backgroundColor = solved ? UIColor.greenColor() : UIColor.redColor()
+        gameSpace.isUserInteractionEnabled = false
+        UIView.animate(withDuration: 0.4) { () -> Void in
+            self.view.backgroundColor = solved ? UIColor.green() : UIColor.red()
         }
     }
     
@@ -133,16 +133,16 @@ class WBGameController: UIViewController {
     // TODO: Move Reset functions to a menu.
     
     /** Empties the buckets, resets the count, and allows for changing the buckets.  Quick and sloppy version. */
-    @IBAction func resetAction(sender: UIButton) {
+    @IBAction func resetAction(_ sender: UIButton) {
         one.dump()
         two.dump()
         count = 0
-        if timer.valid {
+        if timer.isValid {
             timer.invalidate()
         }
         
-        let alert = UIAlertController(title: "Reset", message: "Change Buckets?", preferredStyle: UIAlertControllerStyle.Alert)
-        let yes = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (action: UIAlertAction) -> Void in
+        let alert = UIAlertController(title: "Reset", message: "Change Buckets?", preferredStyle: UIAlertControllerStyle.alert)
+        let yes = UIAlertAction(title: "Yes", style: UIAlertActionStyle.default) { (action: UIAlertAction) -> Void in
             
             let b1 = Int((alert.textFields?.first?.text)!)
             let b2 =  Int((alert.textFields?[1].text)!)
@@ -152,27 +152,27 @@ class WBGameController: UIViewController {
                     self.setBuckets()
             })
         }
-        let no = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { ( action: UIAlertAction) -> Void in
+        let no = UIAlertAction(title: "No", style: UIAlertActionStyle.cancel) { ( action: UIAlertAction) -> Void in
             game.configure(completion: {
                 self.setBuckets()
             })
         }
-        alert.addTextFieldWithConfigurationHandler { (field: UITextField) -> Void in
-            field.keyboardType = UIKeyboardType.DecimalPad
+        alert.addTextField { (field: UITextField) -> Void in
+            field.keyboardType = UIKeyboardType.decimalPad
             field.placeholder = "1st Bucket"
         }
-        alert.addTextFieldWithConfigurationHandler { (field: UITextField) -> Void in
-            field.keyboardType = UIKeyboardType.DecimalPad
+        alert.addTextField { (field: UITextField) -> Void in
+            field.keyboardType = UIKeyboardType.decimalPad
             field.placeholder = "2nd Bucket"
         }
-        alert.addTextFieldWithConfigurationHandler { (field: UITextField) -> Void in
-            field.keyboardType = UIKeyboardType.DecimalPad
+        alert.addTextField { (field: UITextField) -> Void in
+            field.keyboardType = UIKeyboardType.decimalPad
             field.placeholder = "Target"
         }
         
         alert.addAction(no)
         alert.addAction(yes)
-        presentViewController(alert, animated: false, completion: nil)
+        present(alert, animated: false, completion: nil)
     }
 }
 
@@ -187,20 +187,20 @@ extension WBGameController: WBButtonDelegate {
     }
     
     /** Called to update the recipient bucket in a transfer action. */
-    func completeXfer(sender: WBButton, amount: Int, completion: ((successful2: Bool) -> Void)) {
+    func completeXfer(_ sender: WBButton, amount: Int, completion: ((successful2: Bool) -> Void)) {
         let recipient = sender == two ? one : two
-        recipient.pour(amount) { (successful) in
+        recipient?.pour(amount) { (successful) in
             return completion(successful2: successful)
         }
         return completion(successful2: true)
     }
     
     /** Called to evaluate the intent and amount of a transfer action. */
-    func crossBuckets(sender: WBButton) -> (Bool, Int) {
+    func crossBuckets(_ sender: WBButton) -> (Bool, Int) {
         let recipient = sender == two ? one : two
-        let xferSpace = abs(recipient.bucket.capacity - recipient.bucket.content)
+        let xferSpace = abs((recipient?.bucket.capacity)! - (recipient?.bucket.content)!)
         let xferAmount = sender.bucket.content <= xferSpace ? sender.bucket.content : xferSpace
-        return (CGRectIntersectsRect(one.frame, two.frame), xferAmount)
+        return (one.frame.intersects(two.frame), xferAmount)
     }
 }
 
@@ -210,7 +210,7 @@ extension WBGameController: WBButtonDelegate {
 extension WBGameController: GameDelegate {
     
     /** Performs the proper action based on the game state */
-    func gameStatusChanged(iValue: Int) {
+    func gameStatusChanged(_ iValue: Int) {
         
         if let check = Game.state(rawValue: iValue) {
             switch check {

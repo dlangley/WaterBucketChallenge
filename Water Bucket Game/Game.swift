@@ -18,7 +18,7 @@ let game = Game.sharedGame
 
 /** Protocol used to update WBGameController. */
 @objc protocol GameDelegate {
-    func gameStatusChanged(iValue : Int)
+    func gameStatusChanged(_ iValue : Int)
 }
 
 
@@ -64,7 +64,7 @@ class Game : NSObject {
      * Uses default values for optional parameters.
      * Provides a completion block
      */
-    func configure(buc1: Int? = 3, buc2: Int? = 5, targ: Int? = 4, t: Int? = 30, completion:(() -> Void)) {
+    func configure(_ buc1: Int? = 3, buc2: Int? = 5, targ: Int? = 4, t: Int? = 30, completion:(() -> Void)) {
         
         if isSolvable(buc1, cap2: buc2, targ: targ) {
             bucket1 = buc1 ?? bucket1
@@ -77,7 +77,7 @@ class Game : NSObject {
     }
     
     /** Evaluates true if the combination of buckets and targets are solvable.*/
-    func isSolvable(cap1 : Int?, cap2 : Int?, targ: Int?) -> Bool {
+    func isSolvable(_ cap1 : Int?, cap2 : Int?, targ: Int?) -> Bool {
         if let c1 = cap1, c2 = cap2, t = targ {
             let evenBucketsOddTargets = c1 % 2 == 0 && c2 % 2 == 0 && t % 2 != 0
             let sameBuckets = c1 == c2 && c1 != t

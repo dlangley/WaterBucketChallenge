@@ -13,8 +13,8 @@ import UIKit
 
 /** Protocol used to update WBGameController. */
 protocol WBButtonDelegate : class {
-    func crossBuckets(sender: WBButton) -> (Bool, Int)
-    func completeXfer(sender: WBButton, amount: Int, completion: ((successful2: Bool)-> Void))
+    func crossBuckets(_ sender: WBButton) -> (Bool, Int)
+    func completeXfer(_ sender: WBButton, amount: Int, completion: ((successful2: Bool)-> Void))
     func moveMade()
 }
 
@@ -48,22 +48,22 @@ class WBButton: UIButton {
     
 extension WBButton {
     /** Config the buttons to represent the Water Bucket. */
-    override func willMoveToSuperview(newSuperview: UIView?) {
-        super.willMoveToSuperview(newSuperview)
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
         
         if bucket == nil {
             bucket = WBucket()
         }
         
-        titleLabel?.backgroundColor = UIColor.clearColor()
-        setBackgroundImage(UIImage(named: "shinyBucket"), forState: UIControlState.Normal)
-        setBackgroundImage(UIImage(named: "shinyFull"), forState: UIControlState.Selected)
+        titleLabel?.backgroundColor = UIColor.clear()
+        setBackgroundImage(UIImage(named: "shinyBucket"), for: UIControlState())
+        setBackgroundImage(UIImage(named: "shinyFull"), for: UIControlState.selected)
         spot = frame
     }
     
     /** Override to allow for dragging the button. */
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesMoved(touches, withEvent: event)
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
         
         if crossVerified {
             crossVerified = false
@@ -71,13 +71,13 @@ extension WBButton {
         
         for touch in touches {
             // Reposition the Button to wherever the finger moves.
-            center = touch.locationInView(superview)
+            center = touch.location(in: superview)
             
             // Determining animate fill motion when bucket is in the water.
             if center.y >= superview?.bounds.midY && frame.maxY < superview?.bounds.maxY {
                 let rAmount = center.y/((superview?.bounds.height)!/2)
                 let fromLeft = center.x < superview?.bounds.midX
-                transform = CGAffineTransformMakeRotation(CGFloat(fromLeft ? rAmount : -rAmount))
+                transform = CGAffineTransform(rotationAngle: CGFloat(fromLeft ? rAmount : -rAmount))
             
             } else if center.y <= spot.midY {
                 
@@ -97,8 +97,8 @@ extension WBButton {
     }
     
     /** Override to animate the bounce back and perform the proper bucket action. */
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesEnded(touches, withEvent: event)
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
         
         // Actions for when the bucket has water in it
         if bucket.content > 0 {
@@ -140,22 +140,22 @@ extension WBButton {
     
 extension WBButton {
     func snapToOrigin() {
-        UIView.animateWithDuration(0.25) { () -> Void in
+        UIView.animate(withDuration: 0.25) { () -> Void in
         self.frame.origin = self.spot.origin
-        self.transform = CGAffineTransformMakeRotation(0)
+        self.transform = CGAffineTransform(rotationAngle: 0)
         }
     }
     
     /** Spins the title label to alert the player of new values. */
     func highlightContent() {
-        UIView.animateWithDuration(0.25, delay: 0, options: [UIViewAnimationOptions.Autoreverse, UIViewAnimationOptions.CurveEaseInOut] , animations: { () -> Void in
+        UIView.animate(withDuration: 0.25, delay: 0, options: [UIViewAnimationOptions.autoreverse, UIViewAnimationOptions.curveEaseInOut] , animations: { () -> Void in
             
-            let transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+            let transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
             self.titleLabel?.transform = transform
             
             }) { (finished : Bool) -> Void in
                 
-                let trans = CGAffineTransformMakeRotation(0)
+                let trans = CGAffineTransform(rotationAngle: 0)
                 self.titleLabel?.transform = trans
         }
     }
@@ -166,7 +166,7 @@ extension WBButton {
         let s = frame.minX/((superview?.bounds.width)!/2)
         let t = frame.minY/((superview?.bounds.height)!/2)
         let rAmount = abs(s + t)
-        transform = CGAffineTransformMakeRotation(CGFloat(fromLeft ? -rAmount : rAmount))
+        transform = CGAffineTransform(rotationAngle: CGFloat(fromLeft ? -rAmount : rAmount))
         setNeedsLayout()
     }
 }
@@ -194,7 +194,7 @@ extension WBButton {
     }
     
     /** Adds a specified amount of gallons to the bucket. */
-    func pour(amount: Int, completion: ((successful: Bool)-> Void)) {
+    func pour(_ amount: Int, completion: ((successful: Bool)-> Void)) {
         bucket.take(amount) { (successful) in
             return completion(successful: successful)
         }
@@ -206,15 +206,15 @@ extension WBButton {
 
 extension WBButton: WBucketDelegate {
     /** Updates the button title with the current amount. */
-    func contentUpdate(amount: Int) {
-        setTitle( "\(amount)", forState: UIControlState.Normal)
-        setTitle( "\(amount)", forState: UIControlState.Selected)
-        setTitle( "\(amount)", forState: UIControlState.Highlighted)
+    func contentUpdate(_ amount: Int) {
+        setTitle( "\(amount)", for: UIControlState())
+        setTitle( "\(amount)", for: UIControlState.selected)
+        setTitle( "\(amount)", for: UIControlState.highlighted)
         highlightContent()
     }
     
     /** Updates the button image with the presesnce/absence of water. */
-    func emptyUpdate(status: Bool) {
-        selected = status
+    func emptyUpdate(_ status: Bool) {
+        isSelected = status
     }
 }

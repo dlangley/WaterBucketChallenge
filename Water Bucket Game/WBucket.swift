@@ -12,8 +12,8 @@ import Foundation
 
 /** Protocol used to update the WBButton */
 @objc protocol WBucketDelegate {
-    optional func emptyUpdate(status: Bool)
-    optional func contentUpdate(amount: Int)
+    @objc optional func emptyUpdate(_ status: Bool)
+    @objc optional func contentUpdate(_ amount: Int)
 }
 
 
@@ -79,7 +79,7 @@ class WBucket: NSObject {
     1. Fill bucket if it is not already full.
     2. Return TRUE if action is successful.
     */
-    func fill(completion: ((successful: Bool)-> Void)) {
+    func fill(_ completion: ((successful: Bool)-> Void)) {
         if !isFull {
             content = capacity
             return completion(successful: true)
@@ -91,7 +91,7 @@ class WBucket: NSObject {
     1. Empty bucket if it is not already empty.
     2. Return TRUE if action is successful.
     */
-    func dump(completion: ((successful: Bool)-> Void)) {
+    func dump(_ completion: ((successful: Bool)-> Void)) {
         if !isEmpty {
             content = 0
             return completion(successful: true)
@@ -103,7 +103,7 @@ class WBucket: NSObject {
     1. Add/Subtract a specified non-zero amount of gallons if that amount will not take the bucket beyond capacity or below 0.
     2. Return TRUE if action is successful.
     */
-    func take(amount: Int, completion: ((successful: Bool)-> Void)) {
+    func take(_ amount: Int, completion: ((successful: Bool)-> Void)) {
         if amount != 0 && 0...capacity ~= content + amount {
             content += amount
             return completion(successful: true)
