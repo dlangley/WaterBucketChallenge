@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11129.15" systemVersion="16A201w" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" generatesPrototypingConstraints="YES" useTraitCollections="YES" colorMatched="NO" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <development version="7000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11103.10"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="EuphemiaCAS.ttc">
+            <string>EuphemiaUCAS-Bold</string>
+        </array>
+        <array key="HiraginoMincho.ttc">
+            <string>HiraMinProN-W6</string>
+        </array>
+        <array key="Noteworthy.ttc">
+            <string>Noteworthy-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Game Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -17,87 +31,77 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleAspectFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="A3s-7h-WVj">
-                                <rect key="frame" x="20" y="28" width="374" height="579"/>
+                                <rect key="frame" x="16" y="28" width="343" height="521"/>
                                 <subviews>
                                     <view contentMode="scaleAspectFill" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="DkO-uB-52m">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="508"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="480"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="water" translatesAutoresizingMaskIntoConstraints="NO" id="nsV-8b-fzh" userLabel="Background">
-                                                <rect key="frame" x="0.0" y="0.0" width="374" height="508"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="480"/>
                                             </imageView>
                                             <button contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqr-af-VRx" userLabel="Bucket1" customClass="WBButton" customModule="Water_Bucket_Game" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="20" width="154.33333333333334" height="169.33333333333334"/>
-                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
+                                                <rect key="frame" x="20" y="20" width="139.5" height="160"/>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" label="Bucket1"/>
                                                 <fontDescription key="fontDescription" name="HiraMinProN-W6" family="Hiragino Mincho ProN" pointSize="35"/>
                                                 <inset key="titleEdgeInsets" minX="0.0" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <state key="normal" title="0" backgroundImage="shinyBucket">
-                                                    <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Num Gallons" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Twg-gL-68E" userLabel="Cap1">
-                                                <rect key="frame" x="20" y="210" width="154.33333333333334" height="20.333333333333343"/>
+                                                <rect key="frame" x="20" y="201.5" width="139.5" height="20.5"/>
                                                 <accessibility key="accessibilityConfiguration" label="Capacity Label 1"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="soU-1z-rjX" userLabel="Bucket2" customClass="WBButton" customModule="Water_Bucket_Game" customModuleProvider="target">
-                                                <rect key="frame" x="199" y="20" width="154.33333333333331" height="169.33333333333334"/>
+                                                <rect key="frame" x="183.5" y="20" width="139.5" height="160"/>
                                                 <accessibility key="accessibilityConfiguration" label="Bucket2"/>
                                                 <fontDescription key="fontDescription" name="HiraMinProN-W6" family="Hiragino Mincho ProN" pointSize="35"/>
                                                 <inset key="titleEdgeInsets" minX="0.0" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <state key="normal" title="0" backgroundImage="shinyFull">
-                                                    <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Num Gallons" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyb-kn-FSh" userLabel="Cap2">
-                                                <rect key="frame" x="199" y="210" width="154.33333333333331" height="20.333333333333343"/>
+                                                <rect key="frame" x="183.5" y="201.5" width="139.5" height="20.5"/>
                                                 <accessibility key="accessibilityConfiguration" label="Capacity Label 2"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Target" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Fe-bU-iHj" userLabel="Target">
-                                                <rect key="frame" x="92" y="141" width="189" height="226"/>
+                                                <rect key="frame" x="77" y="183" width="189" height="114"/>
                                                 <accessibility key="accessibilityConfiguration" label="Target Label"/>
                                                 <fontDescription key="fontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="71"/>
-                                                <color key="textColor" red="0.42046066055077613" green="0.80286511314098141" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" red="0.42046066055077613" green="0.80286511314098141" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gHs-xr-p3t">
-                                                <rect key="frame" x="160" y="379" width="54" height="127.99999999999994"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="128" id="9ZQ-9g-Bd0"/>
-                                                </constraints>
-                                            </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzR-OM-aEc">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzR-OM-aEc">
                                                 <rect key="frame" x="141" y="475" width="58.5" height="31.999999999999943"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="EuphemiaUCAS-Bold" family="Euphemia UCAS" pointSize="24"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="nsV-8b-fzh" firstAttribute="top" secondItem="DkO-uB-52m" secondAttribute="top" id="2FO-p0-Iat"/>
-                                            <constraint firstAttribute="bottom" secondItem="gHs-xr-p3t" secondAttribute="bottom" id="2et-e6-YJO"/>
                                             <constraint firstItem="uqr-af-VRx" firstAttribute="height" secondItem="nsV-8b-fzh" secondAttribute="height" multiplier="1/3" id="2oB-Tf-ZC4"/>
                                             <constraint firstItem="uqr-af-VRx" firstAttribute="height" secondItem="soU-1z-rjX" secondAttribute="height" id="2sb-CH-Sox"/>
                                             <constraint firstItem="Twg-gL-68E" firstAttribute="top" secondItem="uqr-af-VRx" secondAttribute="bottom" constant="21.5" id="3kx-Y6-3TO"/>
                                             <constraint firstItem="Twg-gL-68E" firstAttribute="leading" secondItem="uqr-af-VRx" secondAttribute="leading" id="7bc-Sz-ayv"/>
                                             <constraint firstItem="uqr-af-VRx" firstAttribute="top" secondItem="DkO-uB-52m" secondAttribute="top" constant="20" symbolic="YES" id="86p-UP-y1n"/>
                                             <constraint firstItem="nsV-8b-fzh" firstAttribute="leading" secondItem="DkO-uB-52m" secondAttribute="leading" id="D8F-Rn-Rn3"/>
-                                            <constraint firstItem="gHs-xr-p3t" firstAttribute="centerX" secondItem="pzR-OM-aEc" secondAttribute="centerX" id="Ern-wP-Eh5"/>
-                                            <constraint firstItem="gHs-xr-p3t" firstAttribute="top" secondItem="0Fe-bU-iHj" secondAttribute="bottom" constant="13" id="Gh9-QU-DXv"/>
                                             <constraint firstItem="Twg-gL-68E" firstAttribute="trailing" secondItem="uqr-af-VRx" secondAttribute="trailing" id="Gs9-LD-6MW"/>
                                             <constraint firstItem="cyb-kn-FSh" firstAttribute="top" secondItem="soU-1z-rjX" secondAttribute="bottom" constant="21.5" id="IfO-ta-4w3"/>
-                                            <constraint firstAttribute="trailing" secondItem="gHs-xr-p3t" secondAttribute="trailing" constant="160" id="Lhb-Tu-27e"/>
-                                            <constraint firstItem="gHs-xr-p3t" firstAttribute="leading" secondItem="DkO-uB-52m" secondAttribute="leading" constant="160" id="Mtv-te-cdb"/>
                                             <constraint firstItem="uqr-af-VRx" firstAttribute="width" secondItem="soU-1z-rjX" secondAttribute="width" id="U63-vM-7jA"/>
                                             <constraint firstAttribute="trailing" secondItem="nsV-8b-fzh" secondAttribute="trailing" id="Wd9-D6-vNp"/>
                                             <constraint firstItem="0Fe-bU-iHj" firstAttribute="centerX" secondItem="DkO-uB-52m" secondAttribute="centerX" id="Xld-NT-VHp"/>
@@ -106,32 +110,31 @@
                                             <constraint firstAttribute="trailing" secondItem="soU-1z-rjX" secondAttribute="trailing" constant="20" symbolic="YES" id="Za0-My-YRa"/>
                                             <constraint firstItem="soU-1z-rjX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="uqr-af-VRx" secondAttribute="trailing" multiplier="1.1" constant="8" symbolic="YES" id="bQJ-1m-kCK"/>
                                             <constraint firstItem="cyb-kn-FSh" firstAttribute="trailing" secondItem="soU-1z-rjX" secondAttribute="trailing" id="cY2-b1-pRH"/>
-                                            <constraint firstItem="gHs-xr-p3t" firstAttribute="bottom" secondItem="pzR-OM-aEc" secondAttribute="bottom" id="haa-A1-IvD"/>
                                             <constraint firstItem="soU-1z-rjX" firstAttribute="top" secondItem="DkO-uB-52m" secondAttribute="top" constant="20" symbolic="YES" id="hkf-MN-0o1"/>
                                             <constraint firstAttribute="bottom" secondItem="nsV-8b-fzh" secondAttribute="bottom" id="jc6-ub-j4V"/>
                                             <constraint firstItem="uqr-af-VRx" firstAttribute="leading" secondItem="DkO-uB-52m" secondAttribute="leading" constant="20" symbolic="YES" id="mKa-Rf-sbv"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z7e-ts-Aev">
-                                        <rect key="frame" x="0.0" y="518" width="374" height="30"/>
+                                        <rect key="frame" x="0.0" y="490" width="343" height="0.0"/>
                                         <state key="normal" title="Reset"/>
                                         <connections>
                                             <action selector="resetAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vxr-MK-2wD"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Begin" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="od1-uu-J33">
-                                        <rect key="frame" x="0.0" y="558" width="374" height="21"/>
+                                        <rect key="frame" x="0.0" y="500" width="343" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="QSK-zY-dvA"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="A3s-7h-WVj" secondAttribute="trailing" id="UFj-cF-r5v"/>
                             <constraint firstAttribute="leadingMargin" secondItem="A3s-7h-WVj" secondAttribute="leading" id="dDn-qN-aZn"/>
@@ -140,7 +143,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="bombImage" destination="gHs-xr-p3t" id="fVj-pX-diL"/>
                         <outlet property="bucketLabel1" destination="Twg-gL-68E" id="EKq-oz-Npb"/>
                         <outlet property="bucketLabel2" destination="cyb-kn-FSh" id="OfO-We-nWG"/>
                         <outlet property="gameSpace" destination="DkO-uB-52m" id="r6d-df-RPF"/>

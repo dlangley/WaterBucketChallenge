@@ -78,7 +78,7 @@ class Game : NSObject {
     
     /** Evaluates true if the combination of buckets and targets are solvable.*/
     func isSolvable(_ cap1 : Int?, cap2 : Int?, targ: Int?) -> Bool {
-        if let c1 = cap1, c2 = cap2, t = targ {
+        if let c1 = cap1, let c2 = cap2, let t = targ {
             let evenBucketsOddTargets = c1 % 2 == 0 && c2 % 2 == 0 && t % 2 != 0
             let sameBuckets = c1 == c2 && c1 != t
             return !evenBucketsOddTargets && !sameBuckets

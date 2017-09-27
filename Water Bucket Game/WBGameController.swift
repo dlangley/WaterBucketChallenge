@@ -66,12 +66,12 @@ class WBGameController: UIViewController {
     /** Represents the amount of moves made so far.
     * Functional - Updates status label and puzzle solved condition.
     */
-    private var count = 0 {
+    var count = 0 {
         willSet {
             status.text = "\(newValue) Moves"
             
             // Ends the game if the goal is reached.
-            if (one.bucket.content == game.target && two.bucket.isEmpty) || (two.bucket.content == game.target && one.bucket.isEmpty) {
+            if (one.bucket.content == game.target && two.isEmpty) || (two.bucket.content == game.target && one.isEmpty) {
                 game.status = .solved
             }
         }
@@ -94,16 +94,16 @@ class WBGameController: UIViewController {
     // MARK: Instance Methods
     
     /** Implements the countdown. */
-    func countDown() {
+    @objc func countDown() {
         remainingTime = remainingTime - 1
     }
     
     /** Configures the WBButtons and Bucket Values according to the game settings. */
     func setBuckets() {
-        one.bucket = WBucket(withCapacity: game.bucket1)
+        one.bucket = WBucket(with: game.bucket1)
         bucketLabel1.text = "\(game.bucket1!) Gallons"
         
-        two.bucket = WBucket(withCapacity: game.bucket2)
+        two.bucket = WBucket(with: game.bucket2)
         bucketLabel2.text = "\(game.bucket2!) Gallons"
         
         targetLabel.text = "\(game.target!)"
@@ -116,7 +116,7 @@ class WBGameController: UIViewController {
     func puzzleReady() {
         self.setBuckets()
         gameSpace.isUserInteractionEnabled = true
-        view.backgroundColor = UIColor.white()
+        view.backgroundColor = UIColor.white
     }
     
     /** Provides Feedback for Success or Failure */
@@ -124,7 +124,7 @@ class WBGameController: UIViewController {
         timer.invalidate()
         gameSpace.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.4) { () -> Void in
-            self.view.backgroundColor = solved ? UIColor.green() : UIColor.red()
+            self.view.backgroundColor = solved ? UIColor.green : UIColor.red
         }
     }
     
@@ -181,18 +181,20 @@ class WBGameController: UIViewController {
     
 extension WBGameController: WBButtonDelegate {
     
+    /** Called to update the recipient bucket in a transfer action. */
+    func completeXfer(_ sender: WBButton, amount: Int, completion: @escaping ((Bool) -> Void)) {
+        let recipient = sender == two ? one : two
+        recipient?.pour(amount) { (successful) in
+            recipient?.isSelected = !(recipient?.isEmpty)!
+            return completion(successful)
+        }
+        return completion(true)
+    }
+    
+    
     /** Called in response to a successful bucket move. */
     func moveMade() {
         count += 1
-    }
-    
-    /** Called to update the recipient bucket in a transfer action. */
-    func completeXfer(_ sender: WBButton, amount: Int, completion: ((successful2: Bool) -> Void)) {
-        let recipient = sender == two ? one : two
-        recipient?.pour(amount) { (successful) in
-            return completion(successful2: successful)
-        }
-        return completion(successful2: true)
     }
     
     /** Called to evaluate the intent and amount of a transfer action. */

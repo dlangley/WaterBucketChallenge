@@ -12,12 +12,12 @@
 		53073AEA1C65AD4A00FA003E /* WBGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53073AE91C65AD4A00FA003E /* WBGameController.swift */; };
 		53073AED1C65AD4A00FA003E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53073AEB1C65AD4A00FA003E /* Main.storyboard */; };
 		53073AF21C65AD4A00FA003E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53073AF01C65AD4A00FA003E /* LaunchScreen.storyboard */; };
-		53073AFD1C65AD4A00FA003E /* Water_Bucket_GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53073AFC1C65AD4A00FA003E /* Water_Bucket_GameTests.swift */; };
 		53073B081C65AD4A00FA003E /* Water_Bucket_GameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53073B071C65AD4A00FA003E /* Water_Bucket_GameUITests.swift */; };
 		53073B161C65AFD300FA003E /* WBButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53073B151C65AFD300FA003E /* WBButton.swift */; };
 		531601251C685A4C007965C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 531601241C685A4C007965C9 /* Assets.xcassets */; };
 		531601271C688B6B007965C9 /* WBucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531601261C688B6B007965C9 /* WBucket.swift */; };
 		531601291C68C700007965C9 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 531601281C68C700007965C9 /* README.md */; };
+		53A1C5011F7A0B3A00D4C256 /* BucketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A1C5001F7A0B3A00D4C256 /* BucketTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,7 +46,6 @@
 		53073AF11C65AD4A00FA003E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		53073AF31C65AD4A00FA003E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		53073AF81C65AD4A00FA003E /* Water Bucket GameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Water Bucket GameTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		53073AFC1C65AD4A00FA003E /* Water_Bucket_GameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water_Bucket_GameTests.swift; sourceTree = "<group>"; };
 		53073AFE1C65AD4A00FA003E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		53073B031C65AD4A00FA003E /* Water Bucket GameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Water Bucket GameUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53073B071C65AD4A00FA003E /* Water_Bucket_GameUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water_Bucket_GameUITests.swift; sourceTree = "<group>"; };
@@ -55,6 +54,7 @@
 		531601241C685A4C007965C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		531601261C688B6B007965C9 /* WBucket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WBucket.swift; sourceTree = "<group>"; };
 		531601281C68C700007965C9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		53A1C5001F7A0B3A00D4C256 /* BucketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,8 +122,8 @@
 		53073AFB1C65AD4A00FA003E /* Water Bucket GameTests */ = {
 			isa = PBXGroup;
 			children = (
-				53073AFC1C65AD4A00FA003E /* Water_Bucket_GameTests.swift */,
 				53073AFE1C65AD4A00FA003E /* Info.plist */,
+				53A1C5001F7A0B3A00D4C256 /* BucketTests.swift */,
 			);
 			path = "Water Bucket GameTests";
 			sourceTree = "<group>";
@@ -200,22 +200,24 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Dwayne Langley";
 				TargetAttributes = {
 					53073AE31C65AD4A00FA003E = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 2YB784UBQA;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 					};
 					53073AF71C65AD4A00FA003E = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0800;
+						DevelopmentTeam = 2YB784UBQA;
+						LastSwiftMigration = 0900;
 						TestTargetID = 53073AE31C65AD4A00FA003E;
 					};
 					53073B021C65AD4A00FA003E = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0800;
+						DevelopmentTeam = 2YB784UBQA;
+						LastSwiftMigration = 0900;
 						TestTargetID = 53073AE31C65AD4A00FA003E;
 					};
 				};
@@ -285,7 +287,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53073AFD1C65AD4A00FA003E /* Water_Bucket_GameTests.swift in Sources */,
+				53A1C5011F7A0B3A00D4C256 /* BucketTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,13 +342,21 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -368,7 +378,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -385,13 +395,21 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -407,9 +425,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -420,11 +439,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2YB784UBQA;
 				INFOPLIST_FILE = "Water Bucket Game/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "self.dlangley.Water-Bucket-Game";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -433,11 +455,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2YB784UBQA;
 				INFOPLIST_FILE = "Water Bucket Game/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "self.dlangley.Water-Bucket-Game";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -445,11 +470,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 2YB784UBQA;
 				INFOPLIST_FILE = "Water Bucket GameTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "self.dlangley.Water-Bucket-GameTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Water Bucket Game.app/Water Bucket Game";
 			};
 			name = Debug;
@@ -458,11 +485,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 2YB784UBQA;
 				INFOPLIST_FILE = "Water Bucket GameTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "self.dlangley.Water-Bucket-GameTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Water Bucket Game.app/Water Bucket Game";
 			};
 			name = Release;
@@ -470,11 +499,13 @@
 		53073B131C65AD4A00FA003E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = 2YB784UBQA;
 				INFOPLIST_FILE = "Water Bucket GameUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "self.dlangley.Water-Bucket-GameUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = "Water Bucket Game";
 				USES_XCTRUNNER = YES;
 			};
@@ -483,11 +514,13 @@
 		53073B141C65AD4A00FA003E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = 2YB784UBQA;
 				INFOPLIST_FILE = "Water Bucket GameUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "self.dlangley.Water-Bucket-GameUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = "Water Bucket Game";
 				USES_XCTRUNNER = YES;
 			};
