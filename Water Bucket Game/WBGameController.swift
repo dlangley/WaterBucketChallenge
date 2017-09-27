@@ -224,4 +224,3 @@ extension WBGameController: GameDelegate {
         }
     }
 }
-

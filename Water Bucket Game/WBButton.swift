@@ -33,17 +33,24 @@ class WBButton: UIButton {
         }
     }
     
-    var isEmpty = true 
-    
-    var shouldHighlight = false
-    
-    /** Represents the original location for the bucket to return to after movement. */
+    /// Represents the original location for the bucket to return to after movement.
     var spot : CGRect!
     
-    /** Prevents updating move made twice for 1 xfer. */
+    /// True when there is no water in the bucket.
+    var isEmpty = true 
+    
+    /// True when the user needs to be updated about a change in the bucket contents.
+    var shouldHighlight = false
+    
+    /// True when you've dropped this bucket onto another bucket.
     var crossVerified = false
     
-    /** Anonymous reference to fire delegate methods. */
+    /// Computed by the starting position of the bucket.
+    var isLeftBucket : Bool {
+        return spot.midX <= (superview?.bounds.midX)!
+    }
+    
+    /// Anonymous reference to fire delegate methods.
     weak var delegate : WBButtonDelegate?
 }
 
@@ -86,7 +93,6 @@ extension WBButton {
             } else if center.y <= spot.midY {
                 
                 // animate dump motion when bucket is dragged up or out
-                let isLeftBucket = spot.midX <= (superview?.bounds.midX)!
                 if isLeftBucket {
                     if frame.minX < (superview?.bounds.minX)! || frame.minY < (superview?.bounds.minY)! {
                         tilt()
@@ -107,8 +113,7 @@ extension WBButton {
         // Constant to reference overlapping bucket info.
         let shouldXfer = delegate!.crossBuckets(self)
         
-        // Transfer condition
-        if bucket.content > 0 && shouldXfer.0 {
+        if bucket.content > 0 && shouldXfer.0 { // Transfer condition
             pour(-shouldXfer.1, completion: { (successful) in
                 if successful {
                     self.delegate?.completeXfer(self, amount: shouldXfer.1, completion: { (successful2) in
@@ -123,11 +128,10 @@ extension WBButton {
             })
         } else if frame.minY <= 0 { // Dump condition
             dump()
-        } else if frame.midY >= (superview?.bounds.midY)! {
+        } else if frame.midY >= (superview?.bounds.midY)! { // Fill Condition
             fill()
         }
         
-        // Return button the original position.
         snapToOrigin()
         
         // Update the layout of the view.
@@ -139,6 +143,8 @@ extension WBButton {
 // MARK: Non-Touch Animations
 
 extension WBButton {
+    
+    /// Returns the button to it's original position and orientation.
     func snapToOrigin() {
         UIView.animateKeyframes(withDuration: 1/3, delay: 0, options: .beginFromCurrentState, animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1, animations: {
@@ -157,22 +163,27 @@ extension WBButton {
         })
     }
     
-    /** Spins the title label to alert the player of new values. */
+    /// Spins the title label to deliver feedback of new water levels.
     func highlightContent() {
-        UIView.animate(withDuration: 1/5, delay: 0, options: [UIViewAnimationOptions.autoreverse, UIViewAnimationOptions.curveEaseInOut] , animations: { () -> Void in
-            
-            let transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
-            self.titleLabel?.transform = transform
-            
-        }) { (finished : Bool) -> Void in
-            
+        
+        // Setup constants to use in animations
+        let transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+        
+        // Do the animation
+        UIView.animateKeyframes(withDuration: 1/5, delay: 0, options: [.autoreverse, .calculationModePaced], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1, animations: {
+                self.titleLabel?.transform = transform
+            })
+        }) { (isFinished) in // Clean up the animation
             let trans = CGAffineTransform(rotationAngle: 0)
             self.titleLabel?.transform = trans
         }
+        
+        // Clean up feedback logic
         shouldHighlight = false
     }
     
-    /** Rotates the button to dump water. */
+    /// Rotates the button to dump water.
     func tilt() {
         let fromLeft = center.x < (superview?.bounds.midX)!
         let s = frame.minX/((superview?.bounds.width)!/2)
@@ -189,15 +200,10 @@ extension WBButton {
 extension WBButton {
     /** Empties the contents of the bucket. */
     func dump() {
-        guard !isEmpty else {
-            print("Bucket already empty.")
-            return
-        }
-        
         do {
             try bucket.load(-bucket.content)
         } catch {
-            print("Check Bucket Problem Error Cases")
+            print("Bucket Problem: \(error)")
             return
         }
         self.delegate?.moveMade()
@@ -205,10 +211,9 @@ extension WBButton {
     
     /** Fills the bucket. */
     func fill() {
-        do {
-            try bucket.load(bucket.room)
-        } catch {
-            print("Check Bucket Problem Error Cases")
+        do { try bucket.load(bucket.room) }
+        catch {
+            print("Bucket Problem: \(error)")
             return
         }
         self.delegate?.moveMade()
@@ -216,10 +221,9 @@ extension WBButton {
     
     /** Adds a specified amount of gallons to the bucket. */
     func pour(_ amount: Int, completion: @escaping ((_ successful: Bool)-> Void)) {
-        do {
-            try bucket.load(amount)
-        } catch {
-            print("Check Bucket Problem Error Cases")
+        do { try bucket.load(amount) }
+        catch {
+            print("Bucket Problem: \(error)")
             return completion(false)
         }
         return completion(true)
@@ -230,8 +234,9 @@ extension WBButton {
 // MARK: WBucketDelegate Methods
 
 extension WBButton: WBucketDelegate {
-    /// Updates the button title with the current amount.
-    func contentUpdate(_ amount: Int) {
+    
+    /// Sets the feedback of changes in water levels.
+    func changedWater(_ amount: Int) {
         shouldHighlight = true
         setTitle( "\(amount)", for: UIControlState())
         setTitle( "\(amount)", for: UIControlState.selected)

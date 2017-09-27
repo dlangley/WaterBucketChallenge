@@ -29,22 +29,14 @@ class BucketTests: XCTestCase {
         XCTAssert(canTake(-5) != nil, canTake(-5)!)
         XCTAssert(canTake(10) != nil, canTake(10)!)
         XCTAssert(canTake(2) == nil, "Added \(2) to \(bucket.content) in a bucket that holds \(bucket.capacity).")
-        
     }
     
     fileprivate func canTake(_ amount: Int) -> String? {
         // Gives proper response for a particular amount.
-        
         do {
             try bucket.load(amount)
-        } catch WBucket.Problem.noWaterAction {
-            return WBucket.Problem.noWaterAction.rawValue
-        } catch WBucket.Problem.negativeAmount {
-            return WBucket.Problem.negativeAmount.rawValue
-        } catch WBucket.Problem.bucketOverflow {
-            return WBucket.Problem.bucketOverflow.rawValue
         } catch {
-            return "An Unhandled Error Occurred"
+            return "Bucket Problem: \(error)"
         }
         
         return nil

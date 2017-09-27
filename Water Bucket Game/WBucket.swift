@@ -10,8 +10,8 @@ import Foundation
 
 // MARK: - WBucketDelegate
 /// Protocol used to update the WBButton.
-@objc protocol WBucketDelegate {
-    @objc optional func contentUpdate(_ amount: Int)
+protocol WBucketDelegate: class {
+    func changedWater(_ amount: Int)
 }
 
 
@@ -33,7 +33,7 @@ class WBucket: NSObject {
     */
     var content = 0 {
         willSet {
-            delegate?.contentUpdate!(newValue)
+            delegate?.changedWater(newValue)
         }
     }
     
