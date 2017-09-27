@@ -33,11 +33,7 @@ class WBButton: UIButton {
         }
     }
     
-    var isEmpty = true {
-        willSet {
-            print("\(bucket.capacity) emptiness is \(newValue)")
-        }
-    }
+    var isEmpty = true 
     
     var shouldHighlight = false
     
@@ -108,30 +104,26 @@ extension WBButton {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         
-        // Actions for when the bucket has water in it
-        if bucket.content > 0 {
-            
-            // Constant to reference overlapping bucket info.
-            let shouldXfer = delegate!.crossBuckets(self)
-            
-            // Transfer condition
-            if shouldXfer.0 {
-                pour(-shouldXfer.1, completion: { (successful) in
-                    if successful {
-                        self.delegate?.completeXfer(self, amount: shouldXfer.1, completion: { (successful2) in
-                            if successful2 {
-                                if !self.crossVerified {
-                                    self.crossVerified = true
-                                    self.delegate?.moveMade()
-                                }
+        // Constant to reference overlapping bucket info.
+        let shouldXfer = delegate!.crossBuckets(self)
+        
+        // Transfer condition
+        if bucket.content > 0 && shouldXfer.0 {
+            pour(-shouldXfer.1, completion: { (successful) in
+                if successful {
+                    self.delegate?.completeXfer(self, amount: shouldXfer.1, completion: { (successful2) in
+                        if successful2 {
+                            if !self.crossVerified {
+                                self.crossVerified = true
+                                self.delegate?.moveMade()
                             }
-                        })
-                    }
-                })
-            } else if frame.minY <= 0 { // Dump condition
-                dump()
-            }
-        } else if bucket.content < bucket.capacity && frame.midY >= (superview?.bounds.midY)! {
+                        }
+                    })
+                }
+            })
+        } else if frame.minY <= 0 { // Dump condition
+            dump()
+        } else if frame.midY >= (superview?.bounds.midY)! {
             fill()
         }
         
