@@ -9,13 +9,19 @@
 
 import UIKit
 
-// MARK: Protocol for WBButtoDelegate
+// MARK: Protocol for WBButtonDelegate
 
 /** Protocol used to update WBGameController. */
 protocol WBButtonDelegate : class {
-    func crossBuckets(_ sender: WBButton) -> (Bool, Int)
-    func completeXfer(_ sender: WBButton, amount: Int, completion: @escaping ((_ successful2: Bool)-> Void))
-    func moveMade()
+    
+    /// Returns true with an amount when this bucket is dropped ontp the other bucket.
+    func xferIntended(from sender: WBButton) -> (Bool, Int)
+    
+    /// Moves water from this bucket to the other bucket.
+    func completeXfer(of amount: Int, from sender: WBButton, completion: @escaping ((_ successful2: Bool)-> Void))
+    
+    /// Tracks the amount of actions performed on a WBButton
+    var bucketActions: Int {get set}
 }
 
 
@@ -111,16 +117,16 @@ extension WBButton {
         super.touchesEnded(touches, with: event)
         
         // Constant to reference overlapping bucket info.
-        let shouldXfer = delegate!.crossBuckets(self)
+        let shouldXfer = delegate!.xferIntended(from: self)
         
         if bucket.content > 0 && shouldXfer.0 { // Transfer condition
             pour(-shouldXfer.1, completion: { (successful) in
                 if successful {
-                    self.delegate?.completeXfer(self, amount: shouldXfer.1, completion: { (successful2) in
+                    self.delegate?.completeXfer(of: shouldXfer.1, from: self, completion: { (successful2) in
                         if successful2 {
                             if !self.crossVerified {
                                 self.crossVerified = true
-                                self.delegate?.moveMade()
+                                self.delegate?.bucketActions += 1
                             }
                         }
                     })
@@ -206,7 +212,7 @@ extension WBButton {
             print("Bucket Problem: \(error)")
             return
         }
-        self.delegate?.moveMade()
+        self.delegate?.bucketActions += 1
     }
     
     /** Fills the bucket. */
@@ -216,7 +222,7 @@ extension WBButton {
             print("Bucket Problem: \(error)")
             return
         }
-        self.delegate?.moveMade()
+        self.delegate?.bucketActions += 1
     }
     
     /** Adds a specified amount of gallons to the bucket. */

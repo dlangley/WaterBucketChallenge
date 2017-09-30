@@ -8,12 +8,10 @@
 
 import UIKit
 
-// MARK: - WBGameController
-
 /** Custom View controller to interface with the user during the game. */
 class WBGameController: UIViewController {
 
-    // MARK: - IBOutlets
+    // MARK:- IBOutlets
     
     /** Represents the bucket on the left.*/
     @IBOutlet var one: WBButton!
@@ -39,13 +37,11 @@ class WBGameController: UIViewController {
     /** Represents the pending doom if user does not solve the puzzle in time. */
     @IBOutlet var bombImage: UIImageView!
     
-    /** Displays the remaining time. 
-    * Functional - Updats game state to failure when time runs out.
-    */
+    /** Displays the remaining time. */
     @IBOutlet var timeLabel: UILabel!
     
     
-    // MARK: - Properties
+    // MARK:- Properties
     
     /** Timer to drive the countdown for the Bucket Puzzle. */
     private var timer : Timer!
@@ -63,10 +59,9 @@ class WBGameController: UIViewController {
         }
     }
     
-    /** Represents the amount of moves made so far.
-    * Functional - Updates status label and puzzle solved condition.
-    */
-    var count = 0 {
+    // Conforms to the WBButtonDelegate Protocol.
+    /// Functional - Updates the status label & triggers the success event when the mission is accomplished.
+    var bucketActions: Int = 0 {
         willSet {
             status.text = "\(newValue) Moves"
             
@@ -78,7 +73,7 @@ class WBGameController: UIViewController {
     }
     
     
-    // MARK: UIViewController LifeCycle Methods
+    // MARK:- UIViewController LifeCycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,12 +86,7 @@ class WBGameController: UIViewController {
     }
 
     
-    // MARK: Instance Methods
-    
-    /** Implements the countdown. */
-    @objc func countDown() {
-        remainingTime = remainingTime - 1
-    }
+    // MARK:- Instance Methods
     
     /** Configures the WBButtons and Bucket Values according to the game settings. */
     func setBuckets() {
@@ -109,7 +99,9 @@ class WBGameController: UIViewController {
         targetLabel.text = "\(game.target!)"
         remainingTime = game.time
         
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(WBGameController.countDown), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
+            self.remainingTime = self.remainingTime - 1
+        })
     }
     
     /** Provides Feedback - Game is Ready */
@@ -129,14 +121,16 @@ class WBGameController: UIViewController {
     }
     
     
-    // MARK: IBActions
-    // TODO: Move Reset functions to a menu.
+    // MARK:- IBActions
+    // FIXME: Move Reset functions to a menu.
     
     /** Empties the buckets, resets the count, and allows for changing the buckets.  Quick and sloppy version. */
     @IBAction func resetAction(_ sender: UIButton) {
         one.dump()
+        one.snapToOrigin()
         two.dump()
-        count = 0
+        two.snapToOrigin()
+        bucketActions = 0
         if timer.isValid {
             timer.invalidate()
         }
@@ -177,12 +171,12 @@ class WBGameController: UIViewController {
 }
 
     
-// MARK: WBButtonDelegate Implementation
+// MARK:- WBButtonDelegate Implementation
     
 extension WBGameController: WBButtonDelegate {
     
     /** Called to update the recipient bucket in a transfer action. */
-    func completeXfer(_ sender: WBButton, amount: Int, completion: @escaping ((Bool) -> Void)) {
+    func completeXfer(of amount: Int, from sender: WBButton, completion: @escaping ((Bool) -> Void)) {
         let recipient = sender == two ? one : two
         recipient?.pour(amount) { (successful) in
             recipient?.isSelected = !(recipient?.isEmpty)!
@@ -191,23 +185,17 @@ extension WBGameController: WBButtonDelegate {
         return completion(true)
     }
     
-    
-    /** Called in response to a successful bucket move. */
-    func moveMade() {
-        count += 1
-    }
-    
     /** Called to evaluate the intent and amount of a transfer action. */
-    func crossBuckets(_ sender: WBButton) -> (Bool, Int) {
+    func xferIntended(from sender: WBButton) -> (Bool, Int) {
         let recipient = sender == two ? one : two
-        let xferSpace = abs((recipient?.bucket.capacity)! - (recipient?.bucket.content)!)
+        let xferSpace = recipient!.bucket.room //abs((recipient?.bucket.capacity)! - (recipient?.bucket.content)!)
         let xferAmount = sender.bucket.content <= xferSpace ? sender.bucket.content : xferSpace
         return (one.frame.intersects(two.frame), xferAmount)
     }
 }
 
     
-// MARK: GameDelegate Implementation
+// MARK:- GameDelegate Implementation
     
 extension WBGameController: GameDelegate {
     
