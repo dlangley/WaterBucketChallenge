@@ -34,12 +34,6 @@ class WBGameController: UIViewController {
     /** Represents the part of the screen that user interacts with to solve the puzzle. */
     @IBOutlet var gameSpace: UIView!
     
-    /** Represents the pending doom if user does not solve the puzzle in time. */
-    @IBOutlet var bombImage: UIImageView!
-    
-    /** Displays the remaining time. */
-    @IBOutlet var timeLabel: UILabel!
-    
     
     // MARK:- Properties
     
@@ -55,7 +49,8 @@ class WBGameController: UIViewController {
             if newValue == 0 {
                 game.status = .failed
             }
-            self.timeLabel.text = "\(newValue!)"
+//            self.timeLabel.text = "\(newValue!)"
+            self.pressureBomb.timeLabel.text  = String(describing: newValue!)
         }
     }
     
@@ -72,6 +67,7 @@ class WBGameController: UIViewController {
         }
     }
     
+    var pressureBomb : BombVC!
     
     // MARK:- UIViewController LifeCycle Methods
     
@@ -81,8 +77,8 @@ class WBGameController: UIViewController {
         game.delegate = self
         one.delegate = self
         two.delegate = self
+        pressureBomb = childViewControllers.last as! BombVC
         setBuckets()
-        
     }
 
     
@@ -96,7 +92,7 @@ class WBGameController: UIViewController {
         two.bucket = WBucket(with: game.bucket2)
         bucketLabel2.text = "\(game.bucket2!) Gallons"
         
-        targetLabel.text = "\(game.target!)"
+        pressureBomb.diffuseTrigger = game.target
         remainingTime = game.time
         
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
@@ -194,9 +190,18 @@ extension WBGameController: WBButtonDelegate {
     }
 }
 
+// MARK:- BombDelegate Implementation
+extension WBGameController: BombDelegate {
+    func explode() {
+        timer.invalidate()
+        gameSpace.isUserInteractionEnabled = false
+        UIView.animate(withDuration: 0.4) { () -> Void in
+            self.view.backgroundColor = UIColor.red
+        }
+    }
+}
     
 // MARK:- GameDelegate Implementation
-    
 extension WBGameController: GameDelegate {
     
     /** Performs the proper action based on the game state */

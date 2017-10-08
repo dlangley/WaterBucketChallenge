@@ -17,7 +17,10 @@
 		531601251C685A4C007965C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 531601241C685A4C007965C9 /* Assets.xcassets */; };
 		531601271C688B6B007965C9 /* WBucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531601261C688B6B007965C9 /* WBucket.swift */; };
 		531601291C68C700007965C9 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 531601281C68C700007965C9 /* README.md */; };
+		538B032C1F88624D001A2A4B /* BucketVw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538B032B1F88624D001A2A4B /* BucketVw.swift */; };
+		538B032E1F88626B001A2A4B /* BucketVw.xib in Resources */ = {isa = PBXBuildFile; fileRef = 538B032D1F88626B001A2A4B /* BucketVw.xib */; };
 		53A1C5011F7A0B3A00D4C256 /* BucketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A1C5001F7A0B3A00D4C256 /* BucketTests.swift */; };
+		53AE8B1B1F85B2A3009C4EBF /* BombVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AE8B1A1F85B2A3009C4EBF /* BombVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,7 +57,10 @@
 		531601241C685A4C007965C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		531601261C688B6B007965C9 /* WBucket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WBucket.swift; sourceTree = "<group>"; };
 		531601281C68C700007965C9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		538B032B1F88624D001A2A4B /* BucketVw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketVw.swift; sourceTree = "<group>"; };
+		538B032D1F88626B001A2A4B /* BucketVw.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BucketVw.xib; sourceTree = "<group>"; };
 		53A1C5001F7A0B3A00D4C256 /* BucketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketTests.swift; sourceTree = "<group>"; };
+		53AE8B1A1F85B2A3009C4EBF /* BombVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BombVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,7 +116,9 @@
 				530324231C66ABC0007FCB3E /* Game.swift */,
 				53073AE91C65AD4A00FA003E /* WBGameController.swift */,
 				53073B151C65AFD300FA003E /* WBButton.swift */,
+				538B032F1F8A8D58001A2A4B /* BucketVw */,
 				531601261C688B6B007965C9 /* WBucket.swift */,
+				53AE8B1A1F85B2A3009C4EBF /* BombVC.swift */,
 				53073AEB1C65AD4A00FA003E /* Main.storyboard */,
 				53073AF01C65AD4A00FA003E /* LaunchScreen.storyboard */,
 				531601241C685A4C007965C9 /* Assets.xcassets */,
@@ -135,6 +143,15 @@
 				53073B091C65AD4A00FA003E /* Info.plist */,
 			);
 			path = "Water Bucket GameUITests";
+			sourceTree = "<group>";
+		};
+		538B032F1F8A8D58001A2A4B /* BucketVw */ = {
+			isa = PBXGroup;
+			children = (
+				538B032B1F88624D001A2A4B /* BucketVw.swift */,
+				538B032D1F88626B001A2A4B /* BucketVw.xib */,
+			);
+			path = BucketVw;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,6 +264,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				538B032E1F88626B001A2A4B /* BucketVw.xib in Resources */,
 				53073AF21C65AD4A00FA003E /* LaunchScreen.storyboard in Resources */,
 				531601251C685A4C007965C9 /* Assets.xcassets in Resources */,
 				53073AED1C65AD4A00FA003E /* Main.storyboard in Resources */,
@@ -274,9 +292,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53AE8B1B1F85B2A3009C4EBF /* BombVC.swift in Sources */,
 				531601291C68C700007965C9 /* README.md in Sources */,
 				53073AEA1C65AD4A00FA003E /* WBGameController.swift in Sources */,
 				531601271C688B6B007965C9 /* WBucket.swift in Sources */,
+				538B032C1F88624D001A2A4B /* BucketVw.swift in Sources */,
 				53073B161C65AFD300FA003E /* WBButton.swift in Sources */,
 				53073AE81C65AD4A00FA003E /* AppDelegate.swift in Sources */,
 				530324241C66ABC0007FCB3E /* Game.swift in Sources */,

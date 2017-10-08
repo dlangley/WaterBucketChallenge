@@ -1,10 +1,9 @@
-
 //
-//  WBButton.swift
+//  BucketVw.swift
 //  Water Bucket Game
 //
-//  Created by Dwayne Langley on 2/5/16.
-//  Copyright © 2016 Dwayne Langley. All rights reserved.
+//  Created by Dwayne Langley on 10/6/17.
+//  Copyright © 2017 Dwayne Langley. All rights reserved.
 //
 
 import UIKit
@@ -12,25 +11,27 @@ import UIKit
 // MARK: Protocol for WBButtonDelegate
 
 /** Protocol used to update WBGameController. */
-protocol WBButtonDelegate : class {
+protocol BucketVwDelegate : class {
     
     /// Returns true with an amount when this bucket is dropped ontp the other bucket.
-    func xferIntended(from sender: WBButton) -> (Bool, Int)
+    func xferIntended(from sender: BucketVw) -> (Bool, Int)
     
     /// Moves water from this bucket to the other bucket.
-    func completeXfer(of amount: Int, from sender: WBButton, completion: @escaping ((_ successful2: Bool)-> Void))
+    func completeXfer(of amount: Int, from sender: BucketVw, completion: @escaping ((_ successful2: Bool)-> Void))
     
     /// Tracks the amount of actions performed on a WBButton
     var bucketActions: Int {get set}
 }
 
 
-// MARK: WBButton
 
-/** Custom UIButton used as the Controller and the View for a single Water Bucket. */
-class WBButton: UIButton {
+/// Custom view laid out in nib to clean up the main Storyboard.
+@IBDesignable class BucketVw: UIView {
     
-    /** Model Object for this button. 
+    /// Used to instantiate the xib file in the setup.
+    var view: UIView!
+    
+    /** Model Object for this button.
      * Functional - Delegate is set upon setting.
      */
     var bucket : WBucket! {
@@ -57,14 +58,39 @@ class WBButton: UIButton {
     }
     
     /// Anonymous reference to fire delegate methods.
-    weak var delegate : WBButtonDelegate?
+    weak var delegate : BucketVwDelegate?
     
+    @IBOutlet var limitLabel: UILabel!
+    @IBOutlet var levelLabel: UILabel!
+    @IBOutlet var button: UIButton!
+    
+    
+    // MARK:- IBDesignable initializer logic for any instantiation.
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        setup()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setup()
+    }
+    
+    func setup() {
+        let bundle = Bundle(for: self.classForCoder)
+        let nib = UINib(nibName: "BucketVw", bundle: bundle)
+        view = nib.instantiate(withOwner: self, options: nil).first as! UIView
+        view.frame = bounds
+        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        addSubview(view)
+    }
 }
 
+// MARK:- LifeCycle Overrides for Touch-Responsive Animation
 
-// MARK: UIButton LifeCycle Overrides
-
-extension WBButton {
+extension BucketVw {
     
     /** Config the buttons to represent the Water Bucket. */
     override func willMove(toSuperview newSuperview: UIView?) {
@@ -74,9 +100,6 @@ extension WBButton {
             bucket = WBucket(with: 0)
         }
         
-        titleLabel?.backgroundColor = UIColor.clear
-        setBackgroundImage(UIImage(named: "shinyBucket"), for: UIControlState())
-        setBackgroundImage(UIImage(named: "shinyFull"), for: UIControlState.selected)
         spot = frame
     }
     
@@ -147,10 +170,9 @@ extension WBButton {
     }
 }
 
+// MARK:- Non-Touch Animations
 
-// MARK: Non-Touch Animations
-
-extension WBButton {
+extension BucketVw {
     
     /// Returns the button to it's original position and orientation.
     func snapToOrigin() {
@@ -162,7 +184,7 @@ extension WBButton {
                 self.transform = CGAffineTransform(rotationAngle: 0)
             })
             UIView.addKeyframe(withRelativeStartTime: 1/8, relativeDuration: 1/16, animations: {
-                self.isSelected = !self.isEmpty
+                self.button.isSelected = !self.isEmpty
             })
         }, completion: { (successful) in
             if self.shouldHighlight {
@@ -180,11 +202,11 @@ extension WBButton {
         // Do the animation
         UIView.animateKeyframes(withDuration: 1/5, delay: 0, options: [.autoreverse, .calculationModePaced], animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1, animations: {
-                self.titleLabel?.transform = transform
+                self.levelLabel?.transform = transform
             })
         }) { (isFinished) in // Clean up the animation
             let trans = CGAffineTransform(rotationAngle: 0)
-            self.titleLabel?.transform = trans
+            self.levelLabel?.transform = trans
         }
         
         // Clean up feedback logic
@@ -203,9 +225,9 @@ extension WBButton {
 }
 
 
-// MARK: Bucket Actions
+// MARK:- Bucket Actions
 
-extension WBButton {
+extension BucketVw {
     /** Empties the contents of the bucket. */
     func dump() {
         do {
@@ -239,16 +261,16 @@ extension WBButton {
 }
 
 
-// MARK: WBucketDelegate Methods
+// MARK:- WBucketDelegate Methods
 
-extension WBButton: WBucketDelegate {
+extension BucketVw: WBucketDelegate {
     
     /// Sets the feedback of changes in water levels.
     func changedWater(_ amount: Int) {
         shouldHighlight = true
-        setTitle( "\(amount)", for: UIControlState())
-        setTitle( "\(amount)", for: UIControlState.selected)
-        setTitle( "\(amount)", for: UIControlState.highlighted)
+        button.setTitle( "\(amount)", for: UIControlState())
+        button.setTitle( "\(amount)", for: UIControlState.selected)
+        button.setTitle( "\(amount)", for: UIControlState.highlighted)
         isEmpty = amount == 0
     }
 }
