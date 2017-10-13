@@ -13,61 +13,37 @@ class WBGameController: UIViewController {
 
     // MARK:- IBOutlets
     
-    /** Represents the bucket on the left.*/
-    @IBOutlet var one: WBButton!
+    /// Represents the bucket on the left.
+    @IBOutlet var bucketView1: BucketVw!
     
-    /** Represents the bucket on the right.*/
-    @IBOutlet var two: WBButton!
+    /// Represents the bucket on the right.
+    @IBOutlet var bucketView2: BucketVw!
     
-    /** Represents the capactity label for the bucket on the left.*/
-    @IBOutlet var bucketLabel1: UILabel!
+    /// Represents the bomb.
+    @IBOutlet var bombView: BombVw!
     
-    /** Represents the capactity label for the bucket on the right.*/
-    @IBOutlet var bucketLabel2: UILabel!
-    
-    /** Represents the target amount of gallons we want to get.*/
-    @IBOutlet var targetLabel: UILabel!
-    
-    /** Updates the user on the amount of moves. */
-    @IBOutlet var status: UILabel!
-    
-    /** Represents the part of the screen that user interacts with to solve the puzzle. */
-    @IBOutlet var gameSpace: UIView!
-    
+    /// Updates the user on the amount of moves.
+    @IBOutlet var status: UILabel?
     
     // MARK:- Properties
     
-    /** Timer to drive the countdown for the Bucket Puzzle. */
-    private var timer : Timer!
-    
-    /** Remaining time in the game.
-     * Functional - Updates the timeLabel.
-     * Functional - Triggers failure event when time runs out.
-     */
-    private var remainingTime : Int! {
-        willSet {
-            if newValue == 0 {
-                game.status = .failed
-            }
-//            self.timeLabel.text = "\(newValue!)"
-            self.pressureBomb.timeLabel.text  = String(describing: newValue!)
-        }
-    }
-    
-    // Conforms to the WBButtonDelegate Protocol.
-    /// Functional - Updates the status label & triggers the success event when the mission is accomplished.
+    /// Conforms to the BucketVwDelegate Protocol.
+    /// Functional - Updates the status label.
     var bucketActions: Int = 0 {
         willSet {
-            status.text = "\(newValue) Moves"
-            
-            // Ends the game if the goal is reached.
-            if (one.bucket.content == game.target && two.isEmpty) || (two.bucket.content == game.target && one.isEmpty) {
-                game.status = .solved
-            }
+            status?.text = newValue > 0 ? "\(newValue) Moves" : "Begin"
         }
     }
     
-    var pressureBomb : BombVC!
+    @IBInspectable var bucketsEnabled: Bool {
+        get {
+            return bucketView1.isUserInteractionEnabled && bucketView2.isUserInteractionEnabled
+        }
+        set {
+            bucketView1.isUserInteractionEnabled = newValue
+            bucketView2.isUserInteractionEnabled = newValue
+        }
+    }
     
     // MARK:- UIViewController LifeCycle Methods
     
@@ -75,9 +51,9 @@ class WBGameController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         game.delegate = self
-        one.delegate = self
-        two.delegate = self
-        pressureBomb = childViewControllers.last as! BombVC
+        bucketView1.delegate = self
+        bucketView2.delegate = self
+        bombView.delegate = self
         setBuckets()
     }
 
@@ -86,31 +62,20 @@ class WBGameController: UIViewController {
     
     /** Configures the WBButtons and Bucket Values according to the game settings. */
     func setBuckets() {
-        one.bucket = WBucket(with: game.bucket1)
-        bucketLabel1.text = "\(game.bucket1!) Gallons"
-        
-        two.bucket = WBucket(with: game.bucket2)
-        bucketLabel2.text = "\(game.bucket2!) Gallons"
-        
-        pressureBomb.diffuseTrigger = game.target
-        remainingTime = game.time
-        
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
-            self.remainingTime = self.remainingTime - 1
-        })
+        bucketView1.bucket = WBucket(with: game.bucket1)
+        bucketView2.bucket = WBucket(with: game.bucket2)
+        bombView.bomb = WBomb(with: game.target, and: game.time)
     }
     
     /** Provides Feedback - Game is Ready */
     func puzzleReady() {
         self.setBuckets()
-        gameSpace.isUserInteractionEnabled = true
         view.backgroundColor = UIColor.white
     }
     
     /** Provides Feedback for Success or Failure */
     func puzzleEnded(_ solved: Bool) {
-        timer.invalidate()
-        gameSpace.isUserInteractionEnabled = false
+        bucketsEnabled = false
         UIView.animate(withDuration: 0.4) { () -> Void in
             self.view.backgroundColor = solved ? UIColor.green : UIColor.red
         }
@@ -120,16 +85,14 @@ class WBGameController: UIViewController {
     // MARK:- IBActions
     // FIXME: Move Reset functions to a menu.
     
-    /** Empties the buckets, resets the count, and allows for changing the buckets.  Quick and sloppy version. */
-    @IBAction func resetAction(_ sender: UIButton) {
-        one.dump()
-        one.snapToOrigin()
-        two.dump()
-        two.snapToOrigin()
+    fileprivate func resetGame() {
+        bucketsEnabled = false
+        
+        bucketView1.dump()
+        bucketView1.snapToOrigin()
+        bucketView2.dump()
+        bucketView2.snapToOrigin()
         bucketActions = 0
-        if timer.isValid {
-            timer.invalidate()
-        }
         
         let alert = UIAlertController(title: "Reset", message: "Change Buckets?", preferredStyle: UIAlertControllerStyle.alert)
         let yes = UIAlertAction(title: "Yes", style: UIAlertActionStyle.default) { (action: UIAlertAction) -> Void in
@@ -139,7 +102,7 @@ class WBGameController: UIViewController {
             let t = Int((alert.textFields?.last?.text)!)
             
             game.configure(b1, buc2: b2, targ: t, completion: {
-                    self.setBuckets()
+                self.setBuckets()
             })
         }
         let no = UIAlertAction(title: "No", style: UIAlertActionStyle.cancel) { ( action: UIAlertAction) -> Void in
@@ -163,41 +126,58 @@ class WBGameController: UIViewController {
         alert.addAction(no)
         alert.addAction(yes)
         present(alert, animated: false, completion: nil)
+        view.setNeedsLayout()
+    }
+    
+    /** Empties the buckets, resets the count, and allows for changing the buckets.  Quick and sloppy version. */
+    @IBAction func resetAction(_ sender: UIButton) {
+        if sender.isSelected { // Reset the game
+            resetGame()
+        } else { // Start the game
+            bucketsEnabled = true
+            bombView.bomb.setItOff()
+        }
+        
+        // Set the bomb timer
+        sender.isSelected = !sender.isSelected
     }
 }
 
     
-// MARK:- WBButtonDelegate Implementation
+// MARK:- BucketVwDelegate Implementation
     
-extension WBGameController: WBButtonDelegate {
-    
-    /** Called to update the recipient bucket in a transfer action. */
-    func completeXfer(of amount: Int, from sender: WBButton, completion: @escaping ((Bool) -> Void)) {
-        let recipient = sender == two ? one : two
-        recipient?.pour(amount) { (successful) in
-            recipient?.isSelected = !(recipient?.isEmpty)!
-            return completion(successful)
+extension WBGameController: BucketVwDelegate {
+    func doAction(for sender: BucketVw) -> Void? {
+        
+        let recipient = sender == bucketView2 ? bucketView1 : bucketView2
+        
+        switch sender.frame {
+            // End Condition
+        case let frame where frame.intersects(bombView.frame) && sender.bucket.content > 0:
+            game.status = sender.bucket.content == bombView.bomb.diffuseTrigger ? .solved : .failed
+            return nil
+            // Transfer Condition
+        case let frame where frame.intersects(recipient!.frame) && sender.bucket.content > 0 && recipient!.bucket.room > 0:
+            let xferAmount = min(sender.bucket.content, recipient!.bucket.room)
+            recipient?.pour(xferAmount)
+            recipient?.snapToOrigin()
+            return sender.pour(-xferAmount)
+            // Dump Condition
+        case let frame where frame.minY < 0 && !sender.isEmpty:
+            return sender.dump()
+            // Fill Condition
+        case let frame where frame.midY > (sender.superview?.frame.midY)! && sender.bucket.room > 0:
+            return sender.fill()
+        default:
+            return nil
         }
-        return completion(true)
-    }
-    
-    /** Called to evaluate the intent and amount of a transfer action. */
-    func xferIntended(from sender: WBButton) -> (Bool, Int) {
-        let recipient = sender == two ? one : two
-        let xferSpace = recipient!.bucket.room //abs((recipient?.bucket.capacity)! - (recipient?.bucket.content)!)
-        let xferAmount = sender.bucket.content <= xferSpace ? sender.bucket.content : xferSpace
-        return (one.frame.intersects(two.frame), xferAmount)
     }
 }
 
 // MARK:- BombDelegate Implementation
 extension WBGameController: BombDelegate {
     func explode() {
-        timer.invalidate()
-        gameSpace.isUserInteractionEnabled = false
-        UIView.animate(withDuration: 0.4) { () -> Void in
-            self.view.backgroundColor = UIColor.red
-        }
+        game.status = .failed
     }
 }
     
@@ -210,8 +190,8 @@ extension WBGameController: GameDelegate {
         if let check = Game.state(rawValue: iValue) {
             switch check {
             case .ready: puzzleReady()
-            case .solved: fallthrough //puzzleSolved()
-            case .failed: fallthrough //puzzleFailed()
+            case .solved: fallthrough
+            case .failed: fallthrough
             default: puzzleEnded(check == .solved)
             }
         }

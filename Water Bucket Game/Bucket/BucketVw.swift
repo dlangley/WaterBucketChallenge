@@ -1,10 +1,9 @@
-
 //
-//  WBButton.swift
+//  BucketVw.swift
 //  Water Bucket Game
 //
-//  Created by Dwayne Langley on 2/5/16.
-//  Copyright © 2016 Dwayne Langley. All rights reserved.
+//  Created by Dwayne Langley on 10/6/17.
+//  Copyright © 2017 Dwayne Langley. All rights reserved.
 //
 
 import UIKit
@@ -12,30 +11,30 @@ import UIKit
 // MARK: Protocol for WBButtonDelegate
 
 /** Protocol used to update WBGameController. */
-protocol WBButtonDelegate : class {
+protocol BucketVwDelegate : class {
     
-    /// Returns true with an amount when this bucket is dropped ontp the other bucket.
-    func xferIntended(from sender: WBButton) -> (Bool, Int)
-    
-    /// Moves water from this bucket to the other bucket.
-    func completeXfer(of amount: Int, from sender: WBButton, completion: @escaping ((_ successful2: Bool)-> Void))
+    /// Does the appropriate action based on the location of the bucket on release.
+    func doAction(for sender: BucketVw) -> Void?
     
     /// Tracks the amount of actions performed on a WBButton
     var bucketActions: Int {get set}
 }
 
 
-// MARK: WBButton
 
-/** Custom UIButton used as the Controller and the View for a single Water Bucket. */
-class WBButton: UIButton {
+/// Custom view laid out in nib to clean up the main Storyboard.
+@IBDesignable class BucketVw: UIView {
     
-    /** Model Object for this button. 
+    /// Used to instantiate the xib file in the setup.
+    var view: UIView!
+    
+    /** Model Object for this button.
      * Functional - Delegate is set upon setting.
      */
     var bucket : WBucket! {
         willSet {
             newValue.delegate = self
+            limitLabel.text = "\(newValue.capacity) gal"
         }
     }
     
@@ -48,23 +47,45 @@ class WBButton: UIButton {
     /// True when the user needs to be updated about a change in the bucket contents.
     var shouldHighlight = false
     
-    /// True when you've dropped this bucket onto another bucket.
-    var crossVerified = false
-    
     /// Computed by the starting position of the bucket.
     var isLeftBucket : Bool {
         return spot.midX <= (superview?.bounds.midX)!
     }
     
     /// Anonymous reference to fire delegate methods.
-    weak var delegate : WBButtonDelegate?
+    weak var delegate : BucketVwDelegate?
     
+    @IBOutlet var limitLabel: UILabel!
+    @IBOutlet var levelLabel: UILabel!
+    @IBOutlet var button: UIButton!
+    
+    
+    // MARK:- IBDesignable initializer logic for any instantiation.
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        setup()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setup()
+    }
+    
+    func setup() {
+        let bundle = Bundle(for: self.classForCoder)
+        let nib = UINib(nibName: "BucketVw", bundle: bundle)
+        view = nib.instantiate(withOwner: self, options: nil).first as! UIView
+        view.frame = bounds
+        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        addSubview(view)
+    }
 }
 
+// MARK:- LifeCycle Overrides for Touch-Responsive Animation
 
-// MARK: UIButton LifeCycle Overrides
-
-extension WBButton {
+extension BucketVw {
     
     /** Config the buttons to represent the Water Bucket. */
     override func willMove(toSuperview newSuperview: UIView?) {
@@ -74,9 +95,6 @@ extension WBButton {
             bucket = WBucket(with: 0)
         }
         
-        titleLabel?.backgroundColor = UIColor.clear
-        setBackgroundImage(UIImage(named: "shinyBucket"), for: UIControlState())
-        setBackgroundImage(UIImage(named: "shinyFull"), for: UIControlState.selected)
         spot = frame
     }
     
@@ -84,22 +102,18 @@ extension WBButton {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
         
-        if crossVerified {
-            crossVerified = false
-        }
-        
         for touch in touches {
             // Reposition the Button to wherever the finger moves.
             center = touch.location(in: superview)
             
             // Determining animate fill motion when bucket is in the water.
-            if center.y >= (superview?.bounds.midY)! && frame.maxY < (superview?.bounds.maxY)! {
-                let rAmount = center.y/((superview?.bounds.height)!/2)
+            if center.y >= (superview?.bounds.midY)! /*&& frame.maxY < (superview?.bounds.maxY)! */ {
+                let rAmount = center.y/((superview?.bounds.height)!/3)
                 let fromLeft = center.x < (superview?.bounds.midX)!
                 transform = CGAffineTransform(rotationAngle: CGFloat(fromLeft ? rAmount : -rAmount))
-                
+
             } else if center.y <= spot.midY {
-                
+
                 // animate dump motion when bucket is dragged up or out
                 if isLeftBucket {
                     if frame.minX < (superview?.bounds.minX)! || frame.minY < (superview?.bounds.minY)! {
@@ -118,39 +132,21 @@ extension WBButton {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         
-        // Constant to reference overlapping bucket info.
-        let shouldXfer = delegate!.xferIntended(from: self)
-        
-        if bucket.content > 0 && shouldXfer.0 { // Transfer condition
-            pour(-shouldXfer.1, completion: { (successful) in
-                if successful {
-                    self.delegate?.completeXfer(of: shouldXfer.1, from: self, completion: { (successful2) in
-                        if successful2 {
-                            if !self.crossVerified {
-                                self.crossVerified = true
-                                self.delegate?.bucketActions += 1
-                            }
-                        }
-                    })
-                }
-            })
-        } else if frame.minY <= 0 { // Dump condition
-            dump()
-        } else if frame.midY >= (superview?.bounds.midY)! { // Fill Condition
-            fill()
+        // Only update the move counter if there's an action performed.
+        if delegate?.doAction(for: self) != nil {
+            delegate?.bucketActions += 1
         }
         
-        snapToOrigin()
-        
-        // Update the layout of the view.
-        superview!.setNeedsLayout()
+        // Clean up.
+        if game.status == .ready {
+            snapToOrigin()
+        }
     }
 }
 
+// MARK:- Non-Touch Animations
 
-// MARK: Non-Touch Animations
-
-extension WBButton {
+extension BucketVw {
     
     /// Returns the button to it's original position and orientation.
     func snapToOrigin() {
@@ -162,7 +158,7 @@ extension WBButton {
                 self.transform = CGAffineTransform(rotationAngle: 0)
             })
             UIView.addKeyframe(withRelativeStartTime: 1/8, relativeDuration: 1/16, animations: {
-                self.isSelected = !self.isEmpty
+                self.button.isSelected = !self.isEmpty
             })
         }, completion: { (successful) in
             if self.shouldHighlight {
@@ -180,11 +176,11 @@ extension WBButton {
         // Do the animation
         UIView.animateKeyframes(withDuration: 1/5, delay: 0, options: [.autoreverse, .calculationModePaced], animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1, animations: {
-                self.titleLabel?.transform = transform
+                self.levelLabel?.transform = transform
             })
         }) { (isFinished) in // Clean up the animation
             let trans = CGAffineTransform(rotationAngle: 0)
-            self.titleLabel?.transform = trans
+            self.levelLabel?.transform = trans
         }
         
         // Clean up feedback logic
@@ -203,9 +199,9 @@ extension WBButton {
 }
 
 
-// MARK: Bucket Actions
+// MARK:- Bucket Actions
 
-extension WBButton {
+extension BucketVw {
     /** Empties the contents of the bucket. */
     func dump() {
         do {
@@ -214,7 +210,6 @@ extension WBButton {
             print("Bucket Problem: \(error)")
             return
         }
-        self.delegate?.bucketActions += 1
     }
     
     /** Fills the bucket. */
@@ -224,31 +219,26 @@ extension WBButton {
             print("Bucket Problem: \(error)")
             return
         }
-        self.delegate?.bucketActions += 1
     }
     
     /** Adds a specified amount of gallons to the bucket. */
-    func pour(_ amount: Int, completion: @escaping ((_ successful: Bool)-> Void)) {
+    func pour(_ amount: Int) {
         do { try bucket.load(amount) }
         catch {
             print("Bucket Problem: \(error)")
-            return completion(false)
         }
-        return completion(true)
     }
 }
 
 
-// MARK: WBucketDelegate Methods
+// MARK:- WBucketDelegate Methods
 
-extension WBButton: WBucketDelegate {
+extension BucketVw: WBucketDelegate {
     
     /// Sets the feedback of changes in water levels.
     func changedWater(_ amount: Int) {
         shouldHighlight = true
-        setTitle( "\(amount)", for: UIControlState())
-        setTitle( "\(amount)", for: UIControlState.selected)
-        setTitle( "\(amount)", for: UIControlState.highlighted)
+        levelLabel.text = "\(amount)"
         isEmpty = amount == 0
     }
 }

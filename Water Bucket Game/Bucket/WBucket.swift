@@ -14,12 +14,10 @@ protocol WBucketDelegate: class {
     func changedWater(_ amount: Int)
 }
 
-
-// MARK: - WBucket
+// MARK: -
 /// Model Object for the Water Bucket.
 class WBucket: NSObject {
     
-    // MARK: - Setup
     /// Creates a new bucket with a specified capacity.
     init(with capacity: Int) {
         super.init()

@@ -32,8 +32,8 @@
                 <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Cuf-eg-tRk" userLabel="Level Plate">
                     <rect key="frame" x="102" y="303.5" width="170" height="114"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YzT-TF-LBw">
-                            <rect key="frame" x="8" y="47" width="154" height="20.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YzT-TF-LBw">
+                            <rect key="frame" x="8" y="1" width="154" height="112"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                             <color key="textColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -44,12 +44,14 @@
                         <constraint firstItem="YzT-TF-LBw" firstAttribute="leading" secondItem="Cuf-eg-tRk" secondAttribute="leadingMargin" id="81f-LS-Bbd"/>
                         <constraint firstItem="YzT-TF-LBw" firstAttribute="centerY" secondItem="Cuf-eg-tRk" secondAttribute="centerY" id="P45-w5-sXM"/>
                         <constraint firstAttribute="trailingMargin" secondItem="YzT-TF-LBw" secondAttribute="trailing" id="U3c-YP-rEM"/>
+                        <constraint firstAttribute="bottom" secondItem="YzT-TF-LBw" secondAttribute="bottom" constant="1" id="dY0-c4-Bag"/>
+                        <constraint firstItem="YzT-TF-LBw" firstAttribute="top" secondItem="Cuf-eg-tRk" secondAttribute="top" constant="1" id="qXe-i6-38J"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bMc-Cq-x1G" userLabel="Limit Area">
                     <rect key="frame" x="102" y="517" width="170" height="47"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 Gallons" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3sE-GF-n4p">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 gal" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3sE-GF-n4p">
                             <rect key="frame" x="-1" y="7.5" width="171" height="32.5"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                             <color key="textColor" red="0.1654259753" green="0.054702780530000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
