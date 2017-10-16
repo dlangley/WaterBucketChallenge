@@ -9,7 +9,6 @@
 import UIKit
 
 protocol BombLogic: class {
-    func diffuseAttempt(successful: Bool)
     func elapsed(to time: Int)
 }
 
@@ -21,7 +20,6 @@ class WBomb: NSObject {
         super.init()
         
         setTriggers(trigger, time)
-        
     }
     
     // MARK: - Properties
@@ -31,52 +29,82 @@ class WBomb: NSObject {
     var diffuseTrigger = 0
     
     /** The current amount of pressure on bomb.
-    * Functional - Triggers Success or Failure event.
-    */
+     * Functional - Triggers Success or Failure event, disarms the bomb.
+     */
     private var pressure = 0 {
         willSet {
-            if let ticker = timer {
-                ticker.invalidate()
+            guard newValue > 0 else { return }
+            if isArmed {
+                isArmed = false
             }
-            guard newValue == diffuseTrigger else {
-                delegate?.diffuseAttempt(successful: false)
-                return
-            }
-            delegate?.diffuseAttempt(successful: true)
         }
     }
     
     /** Remaining time in the game.
      * Functional - Updates the delegate.
      */
-    private var timeTrigger = 0 {
+    private var timeLimit = 0 {
         willSet {
             DispatchQueue.main.async {
                 self.delegate?.elapsed(to: newValue)
             }
             if newValue == 0 {
-                timer.invalidate()
+                isArmed = false
             }
         }
     }
     
+    /** Returns true if the bomb is armed.
+     * Functional - Starts & Stops the countdown.
+     */
+    var isArmed = false {
+        willSet {
+            guard newValue else {
+                timer.invalidate()
+                pressure = 0
+                return
+            }
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
+                self.timeLimit = self.timeLimit - 1
+            })
+        }
+    }
+    
     /** Timer to drive the countdown for the Bomb. */
-    private var timer : Timer!
+    private var timer = Timer()
+    
+    /// Errors that can occur in the course of performing bucket actions.
+    enum Problem: String, Error {
+        case noDiffuser, noTime, triggeredExplosion
+    }
+    
+    /// Arms the bomb to start the timer.
+    func arm() throws {
+        guard timeLimit > 0 else {
+            throw Problem.noTime
+        }
+        guard diffuseTrigger > 0 else {
+            throw Problem.noDiffuser
+        }
+        isArmed = true
+    }
+    
+    /// Disarms the bomb for success or failure.
+    func disarm(with waterPressure: Int) throws {
+        guard waterPressure == diffuseTrigger else {
+            throw Problem.triggeredExplosion
+        }
+        pressure = waterPressure
+    }
 }
 
 // MARK: - Bomb Methods
 extension WBomb {
-    /// Starts the timer.
-    func setItOff() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
-            self.timeTrigger = self.timeTrigger - 1
-        })
-    }
     
     /// Sets the necessary variables.
     fileprivate func setTriggers(_ trigger: Int, _ time: Int) {
         diffuseTrigger = trigger
-        timeTrigger = time
+        timeLimit = time
         pressure = 0
     }
 }

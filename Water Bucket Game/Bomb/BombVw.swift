@@ -64,11 +64,4 @@ extension BombVw: BombLogic {
             return
         }
     }
-    
-    func diffuseAttempt(successful: Bool) {
-        guard successful else {
-            delegate?.explode()
-            return
-        }
-    }
 }

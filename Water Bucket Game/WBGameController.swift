@@ -135,7 +135,7 @@ class WBGameController: UIViewController {
             resetGame()
         } else { // Start the game
             bucketsEnabled = true
-            bombView.bomb.setItOff()
+            try? bombView.bomb.arm()
         }
         
         // Set the bomb timer
@@ -154,7 +154,15 @@ extension WBGameController: BucketVwDelegate {
         switch sender.frame {
             // End Condition
         case let frame where frame.intersects(bombView.frame) && sender.bucket.content > 0:
-            game.status = sender.bucket.content == bombView.bomb.diffuseTrigger ? .solved : .failed
+            recipient?.dump()
+            recipient?.snapToOrigin()
+            do {
+                try bombView.bomb.disarm(with: sender.bucket.content)
+            } catch {
+                game.status = .failed
+                return nil
+            }
+            game.status = .solved
             return nil
             // Transfer Condition
         case let frame where frame.intersects(recipient!.frame) && sender.bucket.content > 0 && recipient!.bucket.room > 0:

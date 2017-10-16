@@ -25,12 +25,17 @@ class BucketTests: XCTestCase {
     }
     
     func testBucketIntake() {
+        // Error when attempting to put no water in the bucket.
         XCTAssert(canTake(0) != nil, canTake(0)!)
+        // Error when attempting to fill bucket to less than 0 gallons.
         XCTAssert(canTake(-5) != nil, canTake(-5)!)
+        // Error when attempting to overflow the bucket.
         XCTAssert(canTake(10) != nil, canTake(10)!)
+        // No error for any amount the bucket can hold.
         XCTAssert(canTake(2) == nil, "Added \(2) to \(bucket.content) in a bucket that holds \(bucket.capacity).")
     }
     
+    /// Utility method to execute and return feedback for the test.
     fileprivate func canTake(_ amount: Int) -> String? {
         // Gives proper response for a particular amount.
         do {
